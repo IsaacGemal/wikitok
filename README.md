@@ -47,27 +47,32 @@ git clone https://github.com/IsaacGemal/wikitok.git
 cd wikitok/frontend
 ```
 
-2. Install dependencies:
+2. Install Bun (if not already installed):
 ```bash
-npm install
+curl -fsSL https://bun.sh/install | bash
 ```
 
-3. Start the development server:
+3. Install dependencies:
 ```bash
-npm run dev
+bun install
 ```
 
-4. Build for production:
+4. Start the development server:
 ```bash
-npm run build
+bun dev
+```
+
+5. Build for production:
+```bash
+bun run build
 ```
 
 ## 🔧 Available Scripts
 
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build
+- `bun dev` - Start development server
+- `bun run build` - Build for production
+- `bun run lint` - Run ESLint
+- `bun run preview` - Preview production build
 
 ## 💡 Core Features Implementation
 
