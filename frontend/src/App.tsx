@@ -68,8 +68,9 @@ function App() {
 
   // Whenever the topic changes, reset and fetch
   useEffect(() => {
-    fetchArticles(true)
-  }, [selectedTopic, fetchArticles])
+    fetchArticles()
+  }, [fetchArticles])
+
 
   // When user chooses a topic
   const handleTopicSelect = (topicValue: string) => {
@@ -101,6 +102,7 @@ function App() {
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
       <div className="fixed top-4 left-4 z-50">
         <button
+          type="button"
           onClick={() => window.location.reload()}
           className="text-2xl font-bold text-white drop-shadow-lg hover:opacity-80 transition-opacity"
         >
@@ -111,20 +113,24 @@ function App() {
       <div className="fixed top-4 right-4 z-50 flex flex-row items-center gap-3">
         {/* About */}
         <button
+          type="button"
           onClick={() =>
             setActiveDialog(activeDialog === 'about' ? 'none' : 'about')
           }
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="About"
+
         >
           <Info className="w-5 h-5" />
         </button>
 
         {/* Language (moved from separate file) */}
         <button
+          type="button"
           onClick={() =>
             setActiveDialog(activeDialog === 'language' ? 'none' : 'language')
           }
+
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Change language"
         >
@@ -133,9 +139,11 @@ function App() {
 
         {/* Topics */}
         <button
+          type="button"
           onClick={() =>
             setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')
           }
+
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Show topics menu"
         >
@@ -149,7 +157,14 @@ function App() {
       {activeDialog === 'language' && (
         <div
           data-dialog="language"
+          role="button"
+          tabIndex={0}
           onClick={() => setActiveDialog('none')}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              setActiveDialog('none')
+            }
+          }}
           className={`
             ${
               isMobile
@@ -171,19 +186,23 @@ function App() {
           >
             {isMobile && (
               <button
+                type="button"
                 onClick={() => setActiveDialog('none')}
                 className="absolute top-2 right-2 text-white/70 hover:text-white"
               >
                 ✕
+
               </button>
             )}
             {LANGUAGES.map((language) => (
               <button
                 key={language.id}
+                type="button"
                 onClick={() => {
                   setLanguage(language.id)
                   setActiveDialog('none')
                 }}
+
                 className="w-full items-center flex gap-3 px-3 py-1 hover:bg-white/20 transition-colors"
               >
                 <img className="w-5" src={language.flag} alt={language.name} />
