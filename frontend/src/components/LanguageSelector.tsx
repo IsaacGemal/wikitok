@@ -34,7 +34,7 @@ export function LanguageSelector() {
       </button>
 
       {showDropdown && (
-        <div className="absolute overflow-hidden py-2 w-30 right-0 mt-2 bg-gray-900 rounded-md shadow-lg">
+        <div className="absolute overflow-hidden py-2 w-30 right-0 top-full mt-1 bg-gray-900 rounded-md shadow-lg">
           {LANGUAGES.map((language) => (
             <button
               key={language.id}
