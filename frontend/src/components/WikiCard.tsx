@@ -66,6 +66,16 @@ export function WikiCard({ article }: WikiCardProps) {
         }
     };
 
+    
+
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    if (isMobile) {
+        const url_base = "https://en.m.wikipedia.org/"
+    } else {
+        const url_base = "https://en.wikipedia.org/"
+    }
+        
+
     return (
         <div className="h-screen w-full flex items-center justify-center snap-start relative">
             <div className="h-full w-full relative">
@@ -115,7 +125,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
                     )}
                     <a
-                        href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                        href={`${url_base}?curid=${article.pageid}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
