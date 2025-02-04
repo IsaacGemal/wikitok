@@ -2,6 +2,7 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
 import { Loader2 } from 'lucide-react'
+import { Analytics } from "@vercel/analytics/react"
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
@@ -90,6 +91,7 @@ function App() {
           <span>Loading...</span>
         </div>
       )}
+      <Analytics />
     </div>
   )
 }
