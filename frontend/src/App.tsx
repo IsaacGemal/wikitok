@@ -1,38 +1,41 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
-import { WikiCard } from './components/WikiCard'
-import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2 } from 'lucide-react'
+import { Loader2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { WikiCard } from "./components/WikiCard";
+import { useWikiArticles } from "./hooks/useWikiArticles";
 
 function App() {
-  const [showAbout, setShowAbout] = useState(false)
-  const { articles, loading, fetchArticles } = useWikiArticles()
-  const observerTarget = useRef(null)
+  const [showAbout, setShowAbout] = useState(false);
+  const { articles, loading, fetchArticles } = useWikiArticles();
+  const observerTarget = useRef(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries
+      const [target] = entries;
       if (target.isIntersecting && !loading) {
-        fetchArticles()
+        fetchArticles();
       }
     },
     [loading, fetchArticles]
-  )
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 0.5,
-    })
+    });
 
     if (observerTarget.current) {
-      observer.observe(observerTarget.current)
+      observer.observe(observerTarget.current);
     }
 
-    return () => observer.disconnect()
-  }, [handleObserver])
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   useEffect(() => {
-    fetchArticles()
-  }, [])
+    const initializeArticles = async () => {
+      await fetchArticles();
+    };
+    initializeArticles();
+  }, []);
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
@@ -64,9 +67,11 @@ function App() {
               ✕
             </button>
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
-            <p className="mb-4">A TikTok-style interface for exploring Wikipedia articles.</p>
+            <p className="mb-4">
+              A TikTok-style interface for exploring Wikipedia articles.
+            </p>
             <p className="text-white/70">
-              Made with ❤️ by{' '}
+              Made with ❤️ by{" "}
               <a
                 href="https://x.com/Aizkmusic"
                 target="_blank"
@@ -91,7 +96,7 @@ function App() {
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
