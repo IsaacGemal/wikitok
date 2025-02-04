@@ -86,7 +86,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         {!imageLoaded && (
                             <div className="absolute inset-0 bg-gray-900 animate-pulse" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
                     </div>
                 ) : (
                     <div className="absolute inset-0 bg-gray-900" />
@@ -111,7 +111,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         </button>
                     </div>
                     {articleContent ? (
-                        <p className="text-gray-100 mb-4 drop-shadow-lg">{articleContent}</p>
+                        <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{articleContent}</p>
                     ) : (
                         <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
                     )}
@@ -127,4 +127,4 @@ export function WikiCard({ article }: WikiCardProps) {
             </div>
         </div>
     );
-} 
+}
