@@ -25,7 +25,7 @@ export function LanguageSelector() {
 
   return (
     <div
-      className="relative"
+      className="relative inline-flex items-center"
       onClick={() => setShowDropdown(!showDropdown)}
       ref={dropdownRef}
     >

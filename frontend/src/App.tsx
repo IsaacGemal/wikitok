@@ -48,14 +48,14 @@ function App() {
         </button>
       </div>
 
-      <div className="flex gap-5 fixed top-4 right-4 z-50">
-        <LanguageSelector />
+      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
         <button
           onClick={() => setShowAbout(!showAbout)}
           className="text-sm text-white/70 hover:text-white transition-colors"
         >
           About
         </button>
+        <LanguageSelector />
       </div>
 
       {showAbout && (
