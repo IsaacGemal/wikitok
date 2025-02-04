@@ -5,6 +5,9 @@ import { Loader2, MoreHorizontal, Info } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
 import { LanguageSelector } from './components/LanguageSelector'
 
+// Type for different dialogs/popovers
+type DialogType = 'none' | 'about' | 'language' | 'topics';
+
 function App() {
   // Built-in topics to start with
   const initialTopics = [
@@ -14,13 +17,40 @@ function App() {
     { label: 'History', value: 'Category:History' },
   ]
 
-  const [showAbout, setShowAbout] = useState(false)
+  // State declarations
+  const [activeDialog, setActiveDialog] = useState<DialogType>('none')
   const [topics, setTopics] = useState(initialTopics)
-  const [showMenu, setShowMenu] = useState(false)
-  const [newCategory, setNewCategory] = useState('')
   const [selectedTopic, setSelectedTopic] = useState('')
+  const [newCategory, setNewCategory] = useState('')
   const { articles, loading, fetchArticles } = useWikiArticles(selectedTopic)
   const observerTarget = useRef<HTMLDivElement | null>(null)
+
+  // Handle escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveDialog('none')
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [])
+
+  // Handle click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const target = event.target as HTMLElement
+      if (!target.closest('[data-dialog]') && !target.closest('button')) {
+        setActiveDialog('none')
+      }
+    }
+
+    if (activeDialog !== 'none') {
+      document.addEventListener('mousedown', handleClickOutside)
+      return () => document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [activeDialog])
 
   // Intersection Observer for infinite scrolling
   const handleObserver = useCallback(
@@ -51,15 +81,10 @@ function App() {
     fetchArticles(true)
   }, [selectedTopic])
 
-  // Toggle the top-right menu
-  const toggleMenu = () => {
-    setShowMenu((prev) => !prev)
-  }
-
   // When user chooses a topic
   const handleTopicSelect = (topicValue: string) => {
     setSelectedTopic(topicValue)
-    setShowMenu(false)
+    setActiveDialog('none')
   }
 
   // Adding a custom category
@@ -96,31 +121,37 @@ function App() {
 
       <div className="fixed top-4 right-4 z-50 flex flex-row items-center gap-3">
         <button
-          onClick={() => setShowAbout(!showAbout)}
+          onClick={() => setActiveDialog(activeDialog === 'about' ? 'none' : 'about')}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="About"
         >
           <Info className="w-5 h-5" />
         </button>
 
-        <LanguageSelector />
+        {/* Pass activeDialog state to LanguageSelector */}
+        <LanguageSelector 
+          isOpen={activeDialog === 'language'}
+          onToggle={() => setActiveDialog(activeDialog === 'language' ? 'none' : 'language')}
+        />
 
         <button
-          onClick={toggleMenu}
+          onClick={() => setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Show topics menu"
         >
           <MoreHorizontal className="w-5 h-5" />
         </button>
 
+        {/* Topics Menu */}
         <div
+          data-dialog="topics"
           className={`
             absolute top-12 right-0 mt-2 
             backdrop-blur-md bg-white/10 
             rounded-md shadow-lg p-4 w-48 
             border border-white/20
             transition-all duration-300 
-            ${showMenu ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}
+            ${activeDialog === 'topics' ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}
           `}
           style={{ zIndex: 9999 }}
         >
@@ -167,11 +198,15 @@ function App() {
         </div>
       </div>
 
-      {showAbout && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+      {/* About Dialog */}
+      {activeDialog === 'about' && (
+        <div 
+          data-dialog="about"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+        >
           <div className="backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20">
             <button
-              onClick={() => setShowAbout(false)}
+              onClick={() => setActiveDialog('none')}
               className="absolute top-2 right-2 text-white/70 hover:text-white"
             >
               ✕
