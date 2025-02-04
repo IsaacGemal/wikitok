@@ -1,4 +1,4 @@
-import { Share2, X } from 'lucide-react';
+import { Share2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface WikiArticle {
