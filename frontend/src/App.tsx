@@ -6,13 +6,12 @@ import { Analytics } from "@vercel/analytics/react"
 import { useLocalization } from './hooks/useLocalization'
 import { LANGUAGES } from './languages'
 
-// Type for different dialogs/popovers
 type DialogType = 'none' | 'about' | 'language' | 'topics';
 
 function App() {
-  const isMobile = window.innerWidth <= 768; // Adjust as you see fit
+  const isMobile = window.innerWidth <= 768; // Adjust if needed
 
-  // Built-in topics to start with
+  // Built-in topics
   const initialTopics = [
     { label: 'Random', value: '' },
     { label: 'Cats', value: 'Category:Cats' },
@@ -20,18 +19,26 @@ function App() {
     { label: 'History', value: 'Category:History' },
   ]
 
-  // State declarations
   const [activeDialog, setActiveDialog] = useState<DialogType>('none')
   const [topics, setTopics] = useState(initialTopics)
   const [selectedTopic, setSelectedTopic] = useState('')
   const [newCategory, setNewCategory] = useState('')
-  const { articles, loading, fetchArticles } = useWikiArticles(selectedTopic)
+  const [currentIndex, setCurrentIndex] = useState<number>(0)
+
+  const {
+    articles,
+    loading,
+    getMoreArticles,
+    fetchArticles,
+    resetArticles
+  } = useWikiArticles();
+
   const observerTarget = useRef<HTMLDivElement | null>(null)
 
   // For language selection
   const { setLanguage } = useLocalization()
 
-  // Handle escape key to close any open dialog
+  // Close any open dialog on ESC
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
@@ -42,19 +49,44 @@ function App() {
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
 
-  // Intersection Observer for infinite scrolling
+  /**
+   * Whenever `selectedTopic` changes, reset articles
+   * and do an initial fetch for the new topic.
+   */
+  useEffect(() => {
+    resetArticles();
+    setCurrentIndex(0);
+
+    // Fetch the first chunk of articles
+    fetchArticles(selectedTopic)
+      .then(() => {
+        // Optionally fetch next chunk into buffer
+        return fetchArticles(selectedTopic, true);
+      })
+      .catch(console.error);
+
+    // We intentionally omit fetchArticles from the dependencies
+    // to avoid re-creating the function and causing infinite loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedTopic])
+
+  /**
+   * Infinite scroll intersection observer
+   */
   const handleObserver = useCallback(
-    (entries: IntersectionObserverEntry[]) => {
+    async (entries: IntersectionObserverEntry[]) => {
       const [target] = entries
-      // If any dialog is open, skip fetching to avoid layout shifts causing infinite fetches
-      if (activeDialog !== 'none') return
+      // If a dialog is open or already loading, skip
+      if (activeDialog !== 'none') return;
       if (target.isIntersecting && !loading) {
-        fetchArticles()
+        // get more articles from the buffer or from the server
+        await getMoreArticles(selectedTopic);
       }
     },
-    [activeDialog, loading, fetchArticles]
+    [activeDialog, loading, selectedTopic, getMoreArticles]
   )
 
+  // Attach observer
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 0.1,
@@ -66,29 +98,20 @@ function App() {
     return () => observer.disconnect()
   }, [handleObserver])
 
-  // Whenever the topic changes, flush the articles and fetch
-  useEffect(() => {
-    if (!selectedTopic) return
-    // This logs to the console whenever we reset with a new topic
-    console.log('Flushing the article cache for new topic:', selectedTopic)
-    
-    fetchArticles(true)
-  }, [selectedTopic, fetchArticles])
-
-  // When user chooses a topic
+  // Handler for selecting a topic from the menu
   const handleTopicSelect = (topicValue: string) => {
     setSelectedTopic(topicValue)
     setActiveDialog('none')
   }
 
-  // Adding a custom category
+  // Handler for adding a custom category
   const addNewCategory = () => {
     if (!newCategory.trim()) return
     const catValue = newCategory.startsWith('Category:')
       ? newCategory.trim()
       : `Category:${newCategory.trim()}`
 
-    // Check if it already exists
+    // Avoid duplicates
     if (topics.find((t) => t.value === catValue)) {
       alert('Topic already exists!')
       return
@@ -103,6 +126,7 @@ function App() {
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+      {/* App Title */}
       <div className="fixed top-4 left-4 z-50">
         <button
           type="button"
@@ -113,25 +137,22 @@ function App() {
         </button>
       </div>
 
+      {/* Top-right buttons */}
       <div className="fixed top-4 right-4 z-50 flex flex-row items-center gap-3">
         {/* About */}
         <button
           type="button"
-          onClick={() =>
-            setActiveDialog(activeDialog === 'about' ? 'none' : 'about')
-          }
+          onClick={() => setActiveDialog(activeDialog === 'about' ? 'none' : 'about')}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="About"
         >
           <Info className="w-5 h-5" />
         </button>
 
-        {/* Language (moved from separate file) */}
+        {/* Language */}
         <button
           type="button"
-          onClick={() =>
-            setActiveDialog(activeDialog === 'language' ? 'none' : 'language')
-          }
+          onClick={() => setActiveDialog(activeDialog === 'language' ? 'none' : 'language')}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Change language"
         >
@@ -141,9 +162,7 @@ function App() {
         {/* Topics */}
         <button
           type="button"
-          onClick={() =>
-            setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')
-          }
+          onClick={() => setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Show topics menu"
         >
@@ -151,9 +170,7 @@ function App() {
         </button>
       </div>
 
-      {/*
-        LANGUAGE DIALOG
-      */}
+      {/* LANGUAGE DIALOG */}
       {activeDialog === 'language' && (
         <div
           data-dialog="language"
@@ -167,13 +184,11 @@ function App() {
         >
           <div
             onClick={(e) => e.stopPropagation()}
-            className={`
-              ${
-                isMobile
-                  ? "backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20"
-                  : ""
-              }
-            `}
+            className={`${
+              isMobile
+                ? "backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20"
+                : ""
+            }`}
           >
             {LANGUAGES.map((language) => (
               <button
@@ -193,26 +208,25 @@ function App() {
         </div>
       )}
 
-      {/*
-        TOPICS DIALOG
-      */}
+      {/* TOPICS DIALOG */}
       {activeDialog === 'topics' && (
         <div
           data-dialog="topics"
           className={`
-            ${isMobile
-              ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
-              : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50'
+            ${
+              isMobile
+                ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
+                : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50'
             }
           `}
           onClick={() => setActiveDialog('none')}
         >
-          {/* Inner container to stop propagation, so clicks here don't close the dialog */}
           <div
             className={`
-              ${isMobile
-                ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20'
-                : ''
+              ${
+                isMobile
+                  ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20'
+                  : ''
               }
             `}
             onClick={(e) => e.stopPropagation()}
@@ -263,9 +277,7 @@ function App() {
         </div>
       )}
 
-      {/*
-        ABOUT DIALOG
-      */}
+      {/* ABOUT DIALOG */}
       {activeDialog === 'about' && (
         <div
           data-dialog="about"
@@ -302,7 +314,15 @@ function App() {
               >
                 @Aizkmusic
               </a>
-              , modified by Jacob
+              , modified by{' '}
+              <a
+                href="https://x.com/jvboid"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:underline"
+              >
+                Jacob
+              </a>
             </p>
             <p className="text-white/70 mt-2">
               Check out the code on{' '}
@@ -319,20 +339,29 @@ function App() {
         </div>
       )}
 
-      {/* Render Articles */}
-      {articles.map((article) => (
-        <WikiCard key={article.pageid} article={article} />
+      {/* Render all articles */}
+      {articles.map((article, idx) => (
+        <WikiCard
+          key={article.pageid}
+          article={article}
+          // If you want to track index for something:
+          // onVisibilityChange={() => setCurrentIndex(idx)}
+        />
       ))}
+
+      {/* Intersection Observer "sentinel" */}
       <div ref={observerTarget} className="h-10" />
+
       {loading && (
         <div className="h-screen w-full flex items-center justify-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
           <span>Loading...</span>
         </div>
       )}
+
       <Analytics />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
