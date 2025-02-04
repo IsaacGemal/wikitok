@@ -1,4 +1,4 @@
-import { Share2 } from 'lucide-react';
+import { Share2, ArrowLeft } from 'lucide-react';
 import { useState, useEffect } from 'react';
 
 interface WikiArticle {
@@ -164,16 +164,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         )}
                     </div>
                     <div className="relative w-full h-full flex items-center justify-center">
-                        <div className="absolute bottom-[10vh] right-6 z-50">
-                            <button
-                                onClick={handleShare}
-                                className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                                aria-label="Share article"
-                            >
-                                <Share2 className="w-5 h-5 text-white" />
-                            </button>
-                        </div>
-                        <div className="w-2/3 h-[85%] bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl overflow-hidden">
+                        <div className="w-9/10 md:w-2/3 h-[85%] bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl overflow-hidden">
                             {isFlipped && (
                                 <iframe
                                     src={getWikipediaUrl()}
@@ -182,6 +173,22 @@ export function WikiCard({ article }: WikiCardProps) {
                                     loading="lazy"
                                 />
                             )}
+                        </div>
+                        <div className="absolute bottom-0 left-0 right-0 z-50 flex justify-center gap-4 items-center p-4 md:bottom-6 md:left-auto md:right-6 md:justify-end">
+                            <button
+                                onClick={handleCardClick}
+                                className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors md:hidden"
+                                aria-label="Go back to card front"
+                            >
+                                <ArrowLeft className="w-5 h-5 text-white" />
+                            </button>
+                            <button
+                                onClick={handleShare}
+                                className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+                                aria-label="Share article"
+                            >
+                                <Share2 className="w-5 h-5 text-white" />
+                            </button>
                         </div>
                     </div>
                 </div>
