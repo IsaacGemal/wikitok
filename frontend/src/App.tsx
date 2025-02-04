@@ -1,9 +1,10 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2, MoreHorizontal, Info } from 'lucide-react'
+import { Loader2, MoreHorizontal, Info, Globe2 } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
-import { LanguageSelector } from './components/LanguageSelector'
+import { useLocalization } from './hooks/useLocalization'
+import { LANGUAGES } from './languages'
 
 // Type for different dialogs/popovers
 type DialogType = 'none' | 'about' | 'language' | 'topics';
@@ -27,6 +28,9 @@ function App() {
   const { articles, loading, fetchArticles } = useWikiArticles(selectedTopic)
   const observerTarget = useRef<HTMLDivElement | null>(null)
 
+  // For language selection
+  const { setLanguage } = useLocalization()
+
   // Handle escape key to close any open dialog
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
@@ -42,11 +46,13 @@ function App() {
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
       const [target] = entries
+      // If any dialog is open, skip fetching to avoid layout shifts causing infinite fetches
+      if (activeDialog !== 'none') return
       if (target.isIntersecting && !loading) {
         fetchArticles()
       }
     },
-    [loading, fetchArticles]
+    [activeDialog, loading, fetchArticles]
   )
 
   useEffect(() => {
@@ -63,7 +69,7 @@ function App() {
   // Whenever the topic changes, reset and fetch
   useEffect(() => {
     fetchArticles(true)
-  }, [selectedTopic])
+  }, [selectedTopic, fetchArticles])
 
   // When user chooses a topic
   const handleTopicSelect = (topicValue: string) => {
@@ -114,13 +120,16 @@ function App() {
           <Info className="w-5 h-5" />
         </button>
 
-        {/* Language Selector */}
-        <LanguageSelector
-          isOpen={activeDialog === 'language'}
-          onToggle={() =>
+        {/* Language (moved from separate file) */}
+        <button
+          onClick={() =>
             setActiveDialog(activeDialog === 'language' ? 'none' : 'language')
           }
-        />
+          className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+          aria-label="Change language"
+        >
+          <Globe2 className="w-5 h-5" />
+        </button>
 
         {/* Topics */}
         <button
@@ -135,8 +144,58 @@ function App() {
       </div>
 
       {/*
+        LANGUAGE DIALOG
+      */}
+      {activeDialog === 'language' && (
+        <div
+          data-dialog="language"
+          onClick={() => setActiveDialog('none')}
+          className={`
+            ${
+              isMobile
+                ? "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+                : "absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50"
+            }
+          `}
+          style={{ zIndex: 9999 }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            className={`
+              ${
+                isMobile
+                  ? "backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20"
+                  : ""
+              }
+            `}
+          >
+            {isMobile && (
+              <button
+                onClick={() => setActiveDialog('none')}
+                className="absolute top-2 right-2 text-white/70 hover:text-white"
+              >
+                ✕
+              </button>
+            )}
+            {LANGUAGES.map((language) => (
+              <button
+                key={language.id}
+                onClick={() => {
+                  setLanguage(language.id)
+                  setActiveDialog('none')
+                }}
+                className="w-full items-center flex gap-3 px-3 py-1 hover:bg-white/20 transition-colors"
+              >
+                <img className="w-5" src={language.flag} alt={language.name} />
+                <span className="text-xs text-white/90">{language.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/*
         TOPICS DIALOG
-        Use the backdrop-click approach rather than a global "click outside" effect.
       */}
       {activeDialog === 'topics' && (
         <div
@@ -217,23 +276,26 @@ function App() {
 
       {/*
         ABOUT DIALOG
-        (Unchanged from your code, but you can do the same "backdrop & stopPropagation" approach if you like.)
       */}
       {activeDialog === 'about' && (
-        <div 
+        <div
           data-dialog="about"
+          onClick={() => setActiveDialog('none')}
           className={`
-            ${isMobile
-              ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
-              : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-80 border border-white/20 z-50'
+            ${
+              isMobile
+                ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
+                : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-80 border border-white/20 z-50'
             }
           `}
         >
           <div
+            onClick={(e) => e.stopPropagation()}
             className={`
-              ${isMobile
-                ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20'
-                : ''
+              ${
+                isMobile
+                  ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20'
+                  : ''
               }
             `}
           >

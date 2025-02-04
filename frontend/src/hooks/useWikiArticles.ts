@@ -21,53 +21,37 @@ const preloadImage = (src: string): Promise<void> => {
   });
 };
 
-export function useWikiArticles(selectedTopic: string) {
+export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
-  const { currentLanguage } = useLocalization();
+  const {currentLanguage} = useLocalization()
 
-  const fetchArticles = async (reset = false) => {
+  const fetchArticles = async (forBuffer = false) => {
     if (loading) return;
     setLoading(true);
-
     try {
-      if (reset) {
-        setArticles([]);
-        setBuffer([]);
-      }
-
-      let urlParams = {
-        action: "query",
-        format: "json",
-        prop: "extracts|pageimages",
-        exintro: "1",
-        exchars: "1000",
-        exlimit: "max",
-        explaintext: "1",
-        piprop: "thumbnail",
-        pithumbsize: "400",
-        origin: "*",
-      } as Record<string, string>;
-
-      if (!selectedTopic) {
-        urlParams.generator = "random";
-        urlParams.grnnamespace = "0";
-        urlParams.grnlimit = "20";
-      } else {
-        urlParams.generator = "categorymembers";
-        urlParams.gcmtitle = selectedTopic;
-        urlParams.gcmnamespace = "0";
-        urlParams.gcmlimit = "20";
-      }
-
       const response = await fetch(
-        currentLanguage.api + new URLSearchParams(urlParams)
+        currentLanguage.api +
+          new URLSearchParams({
+            action: "query",
+            format: "json",
+            generator: "random",
+            grnnamespace: "0",
+            prop: "extracts|pageimages",
+            grnlimit: "20",
+            exintro: "1",
+            exchars: "1000",
+            exlimit: "max",
+            explaintext: "1",
+            piprop: "thumbnail",
+            pithumbsize: "400",
+            origin: "*",
+          })
       );
-      const data = await response.json();
 
-      const pages = data?.query?.pages || {};
-      const newArticles = Object.values(pages)
+      const data = await response.json();
+      const newArticles = Object.values(data.query.pages)
         .map((page: any) => ({
           title: page.title,
           extract: page.extract,
@@ -82,36 +66,27 @@ export function useWikiArticles(selectedTopic: string) {
           .map((article) => preloadImage(article.thumbnail!.source))
       );
 
-      setBuffer(newArticles);
-
-      if (reset) {
-        setArticles(newArticles);
+      if (forBuffer) {
+        setBuffer(newArticles);
       } else {
         setArticles((prev) => [...prev, ...newArticles]);
+        fetchArticles(true);
       }
-
     } catch (error) {
       console.error("Error fetching articles:", error);
     }
     setLoading(false);
   };
 
-  const getMoreArticles = useCallback(
-    (reset?: boolean) => {
-      if (buffer.length > 0 && !reset) {
-        setArticles((prev) => [...prev, ...buffer]);
-        setBuffer([]);
-        fetchArticles(false);
-      } else {
-        fetchArticles(Boolean(reset));
-      }
-    },
-    [buffer, fetchArticles]
-  );
+  const getMoreArticles = useCallback(() => {
+    if (buffer.length > 0) {
+      setArticles((prev) => [...prev, ...buffer]);
+      setBuffer([]);
+      fetchArticles(true);
+    } else {
+      fetchArticles(false);
+    }
+  }, [buffer]);
 
-  return {
-    articles,
-    loading,
-    fetchArticles: getMoreArticles,
-  };
+  return { articles, loading, fetchArticles: getMoreArticles };
 }
