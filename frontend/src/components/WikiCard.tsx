@@ -1,5 +1,6 @@
 import { Share2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useLocalization } from '../hooks/useLocalization';
 
 interface WikiArticle {
     title: string;
@@ -18,12 +19,13 @@ interface WikiCardProps {
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [articleContent, setArticleContent] = useState<string | null>(null);
+    const {currentLanguage} = useLocalization()
 
     useEffect(() => {
         const fetchArticleContent = async () => {
             try {
                 const response = await fetch(
-                    `https://en.wikipedia.org/w/api.php?` +
+                    currentLanguage.api +
                     `action=query&format=json&origin=*&prop=extracts&` +
                     `pageids=${article.pageid}&explaintext=1&exintro=1&` +
                     `exsentences=5`  // Limit to 5 sentences
@@ -53,14 +55,14 @@ export function WikiCard({ article }: WikiCardProps) {
                 await navigator.share({
                     title: article.title,
                     text: articleContent || '',
-                    url: `https://en.wikipedia.org/?curid=${article.pageid}`
+                    url: `${currentLanguage.article}${article.pageid}`
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `https://en.wikipedia.org/?curid=${article.pageid}`;
+            const url = `${currentLanguage.article}${article.pageid}`;
             await navigator.clipboard.writeText(url);
             alert('Link copied to clipboard!');
         }
@@ -95,7 +97,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                            href={`${currentLanguage.article}${article.pageid}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
@@ -116,7 +118,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
                     )}
                     <a
-                        href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                        href={`${currentLanguage.article}${article.pageid}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
