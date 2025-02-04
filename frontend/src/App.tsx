@@ -71,7 +71,6 @@ function App() {
     fetchArticles()
   }, [fetchArticles])
 
-
   // When user chooses a topic
   const handleTopicSelect = (topicValue: string) => {
     setSelectedTopic(topicValue)
@@ -119,7 +118,6 @@ function App() {
           }
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="About"
-
         >
           <Info className="w-5 h-5" />
         </button>
@@ -130,7 +128,6 @@ function App() {
           onClick={() =>
             setActiveDialog(activeDialog === 'language' ? 'none' : 'language')
           }
-
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Change language"
         >
@@ -143,7 +140,6 @@ function App() {
           onClick={() =>
             setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')
           }
-
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Show topics menu"
         >
@@ -157,21 +153,12 @@ function App() {
       {activeDialog === 'language' && (
         <div
           data-dialog="language"
-          role="button"
-          tabIndex={0}
           onClick={() => setActiveDialog('none')}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              setActiveDialog('none')
-            }
-          }}
-          className={`
-            ${
-              isMobile
-                ? "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-                : "absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50"
-            }
-          `}
+          className={`${
+            isMobile
+              ? "fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+              : "absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50"
+          }`}
           style={{ zIndex: 9999 }}
         >
           <div
@@ -184,16 +171,6 @@ function App() {
               }
             `}
           >
-            {isMobile && (
-              <button
-                type="button"
-                onClick={() => setActiveDialog('none')}
-                className="absolute top-2 right-2 text-white/70 hover:text-white"
-              >
-                ✕
-
-              </button>
-            )}
             {LANGUAGES.map((language) => (
               <button
                 key={language.id}
@@ -202,7 +179,6 @@ function App() {
                   setLanguage(language.id)
                   setActiveDialog('none')
                 }}
-
                 className="w-full items-center flex gap-3 px-3 py-1 hover:bg-white/20 transition-colors"
               >
                 <img className="w-5" src={language.flag} alt={language.name} />
@@ -237,16 +213,6 @@ function App() {
             `}
             onClick={(e) => e.stopPropagation()}
           >
-            {/* "X" button for both mobile & desktop */}
-            <button
-              onClick={() => setActiveDialog('none')}
-              className={`
-                absolute top-2 right-2 text-white/70 hover:text-white
-              `}
-            >
-              ✕
-            </button>
-
             <div className="mb-2 pt-6">
               <input
                 value={newCategory}
@@ -318,12 +284,6 @@ function App() {
               }
             `}
           >
-            <button
-              onClick={() => setActiveDialog('none')}
-              className="absolute top-2 right-2 text-white/70 hover:text-white"
-            >
-              ✕
-            </button>
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
             <p className="mb-4 text-white/90">
               A TikTok-style interface for exploring random Wikipedia articles.
@@ -338,6 +298,7 @@ function App() {
               >
                 @Aizkmusic
               </a>
+              , modified by Jacob
             </p>
             <p className="text-white/70 mt-2">
               Check out the code on{' '}
