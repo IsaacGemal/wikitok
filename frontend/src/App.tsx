@@ -94,8 +94,7 @@ function App() {
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-3">
-        {/* Icon button for "About" */}
+      <div className="fixed top-4 right-4 z-50 flex flex-row items-center gap-3">
         <button
           onClick={() => setShowAbout(!showAbout)}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
@@ -106,7 +105,6 @@ function App() {
 
         <LanguageSelector />
 
-        {/* Three-dots menu icon */}
         <button
           onClick={toggleMenu}
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
@@ -115,10 +113,12 @@ function App() {
           <MoreHorizontal className="w-5 h-5" />
         </button>
 
-        {/* The sliding/fading menu for topics */}
         <div
           className={`
-            absolute top-10 right-0 mt-2 bg-gray-900 rounded-md shadow-lg p-4 w-48 
+            absolute top-12 right-0 mt-2 
+            backdrop-blur-md bg-white/10 
+            rounded-md shadow-lg p-4 w-48 
+            border border-white/20
             transition-all duration-300 
             ${showMenu ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}
           `}
@@ -129,24 +129,35 @@ function App() {
               value={newCategory}
               onChange={(e) => setNewCategory(e.target.value)}
               placeholder="New Category"
-              className="w-full mb-2 px-2 py-1 text-sm text-black rounded"
+              className="w-full mb-2 px-2 py-1 text-sm 
+                bg-white/20 text-white placeholder-white/50 
+                rounded border border-white/20 
+                focus:outline-none focus:border-white/40"
             />
             <button
               onClick={addNewCategory}
-              className="w-full text-sm bg-blue-500 hover:bg-blue-600 transition-colors py-1 rounded text-white"
+              className="w-full text-sm 
+                bg-white/20 hover:bg-white/30 
+                transition-colors py-1 rounded 
+                text-white border border-white/20"
             >
               Add
             </button>
           </div>
-          <hr className="border-gray-700 mb-2" />
+          <hr className="border-white/20 mb-2" />
           <div className="flex flex-col gap-1">
             {topics.map((topic) => (
               <button
                 key={topic.value}
                 onClick={() => handleTopicSelect(topic.value)}
                 className={`
-                  text-sm px-2 py-1 text-left hover:bg-gray-800 transition-colors rounded 
-                  ${selectedTopic === topic.value ? 'bg-blue-600' : ''}
+                  text-sm px-2 py-1 text-left 
+                  rounded transition-colors
+                  ${
+                    selectedTopic === topic.value
+                      ? 'bg-white/30 text-white'
+                      : 'hover:bg-white/20 text-white/80'
+                  }
                 `}
               >
                 {topic.label}
@@ -157,8 +168,8 @@ function App() {
       </div>
 
       {showAbout && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 p-6 rounded-lg max-w-md relative">
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20">
             <button
               onClick={() => setShowAbout(false)}
               className="absolute top-2 right-2 text-white/70 hover:text-white"
@@ -166,7 +177,7 @@ function App() {
               ✕
             </button>
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
-            <p className="mb-4">
+            <p className="mb-4 text-white/90">
               A TikTok-style interface for exploring random Wikipedia articles.
             </p>
             <p className="text-white/70">
