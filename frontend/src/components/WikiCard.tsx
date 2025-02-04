@@ -154,24 +154,11 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute w-full h-full backface-hidden rotate-y-180">
                     <div className="absolute inset-0">
                         {article.thumbnail ? (
-                            <>
-                                <img
-                                    loading="lazy"
-                                    src={article.thumbnail.source}
-                                    alt={article.title}
-                                    className={`w-full h-full object-cover blur-sm brightness-50 transition-opacity duration-300 ${
-                                        imageLoaded ? 'opacity-100' : 'opacity-0'
-                                    }`}
-                                    onLoad={() => setImageLoaded(true)}
-                                    onError={(e) => {
-                                        console.error('Image failed to load:', e);
-                                        setImageLoaded(true);
-                                    }}
-                                />
-                                {!imageLoaded && (
-                                    <div className="absolute inset-0 bg-gray-900 animate-pulse" />
-                                )}
-                            </>
+                            <img
+                                src={article.thumbnail.source}
+                                alt=""
+                                className="w-full h-full object-cover blur-sm brightness-50"
+                            />
                         ) : (
                             <div className="absolute inset-0 bg-gray-900" />
                         )}
@@ -201,4 +188,4 @@ export function WikiCard({ article }: WikiCardProps) {
             </div>
         </div>
     );
-}
+} 
