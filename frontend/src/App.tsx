@@ -9,6 +9,8 @@ import { LanguageSelector } from './components/LanguageSelector'
 type DialogType = 'none' | 'about' | 'language' | 'topics';
 
 function App() {
+  const isMobile = window.innerWidth <= 768; // Adjust as you see fit
+
   // Built-in topics to start with
   const initialTopics = [
     { label: 'Random', value: '' },
@@ -25,32 +27,16 @@ function App() {
   const { articles, loading, fetchArticles } = useWikiArticles(selectedTopic)
   const observerTarget = useRef<HTMLDivElement | null>(null)
 
-  // Handle escape key
+  // Handle escape key to close any open dialog
   useEffect(() => {
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
         setActiveDialog('none')
       }
     }
-
     document.addEventListener('keydown', handleEscape)
     return () => document.removeEventListener('keydown', handleEscape)
   }, [])
-
-  // Handle click outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      const target = event.target as HTMLElement
-      if (!target.closest('[data-dialog]') && !target.closest('button')) {
-        setActiveDialog('none')
-      }
-    }
-
-    if (activeDialog !== 'none') {
-      document.addEventListener('mousedown', handleClickOutside)
-      return () => document.removeEventListener('mousedown', handleClickOutside)
-    }
-  }, [activeDialog])
 
   // Intersection Observer for infinite scrolling
   const handleObserver = useCallback(
@@ -68,11 +54,9 @@ function App() {
       threshold: 0.1,
       rootMargin: '100px',
     })
-
     if (observerTarget.current) {
       observer.observe(observerTarget.current)
     }
-
     return () => observer.disconnect()
   }, [handleObserver])
 
@@ -88,7 +72,6 @@ function App() {
   }
 
   // Adding a custom category
-  // Wikipedia categories often need "Category:Foo" – you could handle that automatically
   const addNewCategory = () => {
     if (!newCategory.trim()) return
     const catValue = newCategory.startsWith('Category:')
@@ -120,91 +103,140 @@ function App() {
       </div>
 
       <div className="fixed top-4 right-4 z-50 flex flex-row items-center gap-3">
+        {/* About */}
         <button
-          onClick={() => setActiveDialog(activeDialog === 'about' ? 'none' : 'about')}
+          onClick={() =>
+            setActiveDialog(activeDialog === 'about' ? 'none' : 'about')
+          }
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="About"
         >
           <Info className="w-5 h-5" />
         </button>
 
-        {/* Pass activeDialog state to LanguageSelector */}
-        <LanguageSelector 
+        {/* Language Selector */}
+        <LanguageSelector
           isOpen={activeDialog === 'language'}
-          onToggle={() => setActiveDialog(activeDialog === 'language' ? 'none' : 'language')}
+          onToggle={() =>
+            setActiveDialog(activeDialog === 'language' ? 'none' : 'language')
+          }
         />
 
+        {/* Topics */}
         <button
-          onClick={() => setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')}
+          onClick={() =>
+            setActiveDialog(activeDialog === 'topics' ? 'none' : 'topics')
+          }
           className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
           aria-label="Show topics menu"
         >
           <MoreHorizontal className="w-5 h-5" />
         </button>
+      </div>
 
-        {/* Topics Menu */}
+      {/*
+        TOPICS DIALOG
+        Use the backdrop-click approach rather than a global "click outside" effect.
+      */}
+      {activeDialog === 'topics' && (
         <div
           data-dialog="topics"
           className={`
-            absolute top-12 right-0 mt-2 
-            backdrop-blur-md bg-white/10 
-            rounded-md shadow-lg p-4 w-48 
-            border border-white/20
-            transition-all duration-300 
-            ${activeDialog === 'topics' ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-2 pointer-events-none'}
+            ${isMobile
+              ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
+              : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-48 border border-white/20 z-50'
+            }
           `}
-          style={{ zIndex: 9999 }}
+          onClick={() => setActiveDialog('none')}
         >
-          <div className="mb-2">
-            <input
-              value={newCategory}
-              onChange={(e) => setNewCategory(e.target.value)}
-              placeholder="New Category"
-              className="w-full mb-2 px-2 py-1 text-sm 
-                bg-white/20 text-white placeholder-white/50 
-                rounded border border-white/20 
-                focus:outline-none focus:border-white/40"
-            />
+          {/* Inner container to stop propagation, so clicks here don't close the dialog */}
+          <div
+            className={`
+              ${isMobile
+                ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg w-full max-w-md relative border border-white/20'
+                : ''
+              }
+            `}
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* "X" button for both mobile & desktop */}
             <button
-              onClick={addNewCategory}
-              className="w-full text-sm 
-                bg-white/20 hover:bg-white/30 
-                transition-colors py-1 rounded 
-                text-white border border-white/20"
+              onClick={() => setActiveDialog('none')}
+              className={`
+                absolute top-2 right-2 text-white/70 hover:text-white
+              `}
             >
-              Add
+              ✕
             </button>
-          </div>
-          <hr className="border-white/20 mb-2" />
-          <div className="flex flex-col gap-1">
-            {topics.map((topic) => (
+
+            <div className="mb-2 pt-6">
+              <input
+                value={newCategory}
+                onChange={(e) => setNewCategory(e.target.value)}
+                placeholder="New Category"
+                className="w-full mb-2 px-2 py-1 text-sm 
+                  bg-white/20 text-white placeholder-white/50 
+                  rounded border border-white/20 
+                  focus:outline-none focus:border-white/40"
+              />
               <button
-                key={topic.value}
-                onClick={() => handleTopicSelect(topic.value)}
-                className={`
-                  text-sm px-2 py-1 text-left 
-                  rounded transition-colors
-                  ${
-                    selectedTopic === topic.value
-                      ? 'bg-white/30 text-white'
-                      : 'hover:bg-white/20 text-white/80'
-                  }
-                `}
+                onClick={addNewCategory}
+                className="w-full text-sm 
+                  bg-white/20 hover:bg-white/30 
+                  transition-colors py-1 rounded 
+                  text-white border border-white/20"
               >
-                {topic.label}
+                Add
               </button>
-            ))}
+            </div>
+
+            <hr className="border-white/20 mb-2" />
+
+            <div className="flex flex-col gap-1">
+              {topics.map((topic) => (
+                <button
+                  key={topic.value}
+                  onClick={() => handleTopicSelect(topic.value)}
+                  className={`
+                    text-sm px-2 py-1 text-left 
+                    rounded transition-colors
+                    ${
+                      selectedTopic === topic.value
+                        ? 'bg-white/30 text-white'
+                        : 'hover:bg-white/20 text-white/80'
+                    }
+                  `}
+                >
+                  {topic.label}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
-      {/* About Dialog */}
+      {/*
+        ABOUT DIALOG
+        (Unchanged from your code, but you can do the same "backdrop & stopPropagation" approach if you like.)
+      */}
       {activeDialog === 'about' && (
         <div 
           data-dialog="about"
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
+          className={`
+            ${isMobile
+              ? 'fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4'
+              : 'absolute top-12 right-4 backdrop-blur-md bg-white/10 rounded-md shadow-lg p-4 w-80 border border-white/20 z-50'
+            }
+          `}
         >
-          <div className="backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20">
+          <div
+            className={`
+              ${isMobile
+                ? 'backdrop-blur-md bg-white/10 p-6 rounded-lg max-w-md relative border border-white/20'
+                : ''
+              }
+            `}
+          >
             <button
               onClick={() => setActiveDialog('none')}
               className="absolute top-2 right-2 text-white/70 hover:text-white"
@@ -241,6 +273,7 @@ function App() {
         </div>
       )}
 
+      {/* Render Articles */}
       {articles.map((article) => (
         <WikiCard key={article.pageid} article={article} />
       ))}
