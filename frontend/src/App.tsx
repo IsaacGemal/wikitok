@@ -21,7 +21,8 @@ function App() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
-      threshold: 0.5,
+      threshold: 0.1,
+      rootMargin: '100px',
     })
 
     if (observerTarget.current) {
@@ -65,7 +66,9 @@ function App() {
               ✕
             </button>
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
-            <p className="mb-4">A TikTok-style interface for exploring Wikipedia articles.</p>
+            <p className="mb-4">
+              A TikTok-style interface for exploring random Wikipedia articles.
+            </p>
             <p className="text-white/70">
               Made with ❤️ by{' '}
               <a
@@ -75,6 +78,17 @@ function App() {
                 className="text-white hover:underline"
               >
                 @Aizkmusic
+              </a>
+            </p>
+            <p className="text-white/70 mt-2">
+              Check out the code on{' '}
+              <a
+                href="https://github.com/IsaacGemal/wikitok"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:underline"
+              >
+                GitHub
               </a>
             </p>
           </div>
