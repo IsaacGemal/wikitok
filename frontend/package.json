@@ -15,6 +15,8 @@
     "lucide-react": "^0.474.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-responsive": "^10.0.0",
+    "rollup": "^4.34.2",
     "tailwindcss": "^4.0.3"
   },
   "devDependencies": {
@@ -28,6 +30,6 @@
     "globals": "^15.14.0",
     "typescript": "~5.6.2",
     "typescript-eslint": "^8.18.2",
-    "vite": "^6.0.5"
+    "vite": "^6.0.11"
   }
 }

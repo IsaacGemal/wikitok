@@ -1,5 +1,6 @@
 import { Share2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 interface WikiArticle {
     title: string;
@@ -47,34 +48,32 @@ export function WikiCard({ article }: WikiCardProps) {
         pageid: article.pageid
     });
 
+    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
+    let url_base = "";
+    if (isMobile) {
+        url_base = "https://en.m.wikipedia.org/"
+    } else {
+        url_base = "https://en.wikipedia.org/"
+    }
+
     const handleShare = async () => {
         if (navigator.share) {
             try {
                 await navigator.share({
                     title: article.title,
                     text: articleContent || '',
-                    url: `https://en.wikipedia.org/?curid=${article.pageid}`
+                    url: `${url_base}?curid=${article.pageid}`
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `https://en.wikipedia.org/?curid=${article.pageid}`;
+            const url = `${url_base}?curid=${article.pageid}`;
             await navigator.clipboard.writeText(url);
             alert('Link copied to clipboard!');
         }
     };
-
-    
-
-    const isMobile = useMediaQuery({ query: '(max-width: 768px)' });
-    if (isMobile) {
-        const url_base = "https://en.m.wikipedia.org/"
-    } else {
-        const url_base = "https://en.wikipedia.org/"
-    }
-        
 
     return (
         <div className="h-screen w-full flex items-center justify-center snap-start relative">
@@ -104,7 +103,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                            href={`${url_base}?curid=${article.pageid}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
