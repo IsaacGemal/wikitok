@@ -19,6 +19,23 @@ export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [articleContent, setArticleContent] = useState<string | null>(null);
     const [isFlipped, setIsFlipped] = useState(false);
+    const [isMobileView, setIsMobileView] = useState(false);
+
+    useEffect(() => {
+        // Check if we should use mobile view (screen width < 768px)
+        const checkMobileView = () => {
+            setIsMobileView(window.innerWidth < 768);
+        };
+
+        // Initial check
+        checkMobileView();
+
+        // Add listener for window resize
+        window.addEventListener('resize', checkMobileView);
+
+        // Cleanup
+        return () => window.removeEventListener('resize', checkMobileView);
+    }, []);
 
     useEffect(() => {
         const fetchArticleContent = async () => {
@@ -42,6 +59,11 @@ export function WikiCard({ article }: WikiCardProps) {
         fetchArticleContent();
     }, [article.pageid]);
 
+    const getWikipediaUrl = () => {
+        const baseUrl = isMobileView ? 'https://en.m.wikipedia.org' : 'https://en.wikipedia.org';
+        return `${baseUrl}/?curid=${article.pageid}`;
+    };
+
     const handleShare = async (e: React.MouseEvent) => {
         e.stopPropagation(); // Prevent card flip when sharing
         if (navigator.share) {
@@ -49,14 +71,13 @@ export function WikiCard({ article }: WikiCardProps) {
                 await navigator.share({
                     title: article.title,
                     text: articleContent || '',
-                    url: `https://en.wikipedia.org/?curid=${article.pageid}`
+                    url: getWikipediaUrl()
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
-            const url = `https://en.wikipedia.org/?curid=${article.pageid}`;
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(getWikipediaUrl());
             alert('Link copied to clipboard!');
         }
     };
@@ -168,7 +189,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         <div className="w-2/3 h-[85%] bg-white/95 backdrop-blur-sm rounded-lg shadow-2xl overflow-hidden">
                             {isFlipped && (
                                 <iframe
-                                    src={`https://en.wikipedia.org/?curid=${article.pageid}`}
+                                    src={getWikipediaUrl()}
                                     className="w-full h-full border-none"
                                     title={`Wikipedia article: ${article.title}`}
                                     loading="lazy"
