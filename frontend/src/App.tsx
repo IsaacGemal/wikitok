@@ -66,10 +66,14 @@ function App() {
     return () => observer.disconnect()
   }, [handleObserver])
 
-  // Whenever the topic changes, reset and fetch
+  // Whenever the topic changes, flush the articles and fetch
   useEffect(() => {
-    fetchArticles()
-  }, [fetchArticles])
+    if (!selectedTopic) return
+    // This logs to the console whenever we reset with a new topic
+    console.log('Flushing the article cache for new topic:', selectedTopic)
+    
+    fetchArticles(true)
+  }, [selectedTopic, fetchArticles])
 
   // When user chooses a topic
   const handleTopicSelect = (topicValue: string) => {
@@ -213,7 +217,7 @@ function App() {
             `}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mb-2 pt-6">
+            <div className="mb-2">
               <input
                 value={newCategory}
                 onChange={(e) => setNewCategory(e.target.value)}
