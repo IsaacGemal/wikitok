@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2, MoreHorizontal } from 'lucide-react'
+import { Loader2, MoreHorizontal, Info } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
 import { LanguageSelector } from './components/LanguageSelector'
 
@@ -95,12 +95,15 @@ function App() {
       </div>
 
       <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-3">
+        {/* Icon button for "About" */}
         <button
           onClick={() => setShowAbout(!showAbout)}
-          className="text-sm text-white/70 hover:text-white transition-colors"
+          className="p-1 bg-white/10 rounded-full hover:bg-white/20 transition-colors"
+          aria-label="About"
         >
-          About
+          <Info className="w-5 h-5" />
         </button>
+
         <LanguageSelector />
 
         {/* Three-dots menu icon */}
