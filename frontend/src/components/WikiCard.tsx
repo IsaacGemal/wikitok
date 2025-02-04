@@ -72,6 +72,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 {article.thumbnail ? (
                     <div className="absolute inset-0">
                         <img
+                            loading="lazy"
                             src={article.thumbnail.source}
                             alt={article.title}
                             className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
