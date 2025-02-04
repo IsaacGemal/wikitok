@@ -3,7 +3,7 @@
 	"name": "WikiTok",
 	"icons": [
 		{
-		"src": "vite.svg",
+		"src": "wiki-logo.svg",
 		"sizes": "any",
 		"type": "image/svg+xml"
 		}
