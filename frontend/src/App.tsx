@@ -100,7 +100,7 @@ function App() {
       {articles.map((article) => (
         <WikiCard key={article.pageid} article={article} />
       ))}
-      <div ref={observerTarget} className="h-10" />
+      <div ref={observerTarget} className="h-10 -mt-1" />
       {loading && (
         <div className="h-screen w-full flex items-center justify-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
