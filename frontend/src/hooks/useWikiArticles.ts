@@ -25,7 +25,7 @@ export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
-  const {currentLanguage} = useLocalization()
+  const { currentLanguage } = useLocalization();
 
   const fetchArticles = async (forBuffer = false) => {
     if (loading) return;

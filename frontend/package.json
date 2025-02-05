@@ -16,7 +16,9 @@
     "lucide-react": "^0.474.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "tailwindcss": "^4.0.3"
+    "tailwind-merge": "^3.0.1",
+    "tailwindcss": "^4.0.3",
+    "use-debounce": "^10.0.4"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

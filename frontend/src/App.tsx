@@ -1,62 +1,74 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
-import { WikiCard } from './components/WikiCard'
-import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2 } from 'lucide-react'
-import { Analytics } from "@vercel/analytics/react"
-import { LanguageSelector } from './components/LanguageSelector'
+import { useEffect, useRef, useCallback, useState } from "react";
+import { WikiCard } from "./components/WikiCard";
+import { useWikiArticles } from "./hooks/useWikiArticles";
+import { Loader2 } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
+import { LanguageSelector } from "./components/LanguageSelector";
+import Search from "./components/search";
 
 function App() {
-  const [showAbout, setShowAbout] = useState(false)
-  const { articles, loading, fetchArticles } = useWikiArticles()
-  const observerTarget = useRef(null)
+  const [showAbout, setShowAbout] = useState(false);
+  const { articles, loading, fetchArticles } = useWikiArticles();
+  const observerTarget = useRef(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries
+      const [target] = entries;
       if (target.isIntersecting && !loading) {
-        fetchArticles()
+        fetchArticles();
       }
     },
     [loading, fetchArticles]
-  )
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 0.1,
-      rootMargin: '100px',
-    })
+      rootMargin: "100px",
+    });
 
     if (observerTarget.current) {
-      observer.observe(observerTarget.current)
+      observer.observe(observerTarget.current);
     }
 
-    return () => observer.disconnect()
-  }, [handleObserver])
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   useEffect(() => {
-    fetchArticles()
-  }, [])
+    fetchArticles();
+  }, []);
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
-      <div className="fixed top-4 left-4 z-50">
-        <button
-          onClick={() => window.location.reload()}
-          className="text-2xl font-bold text-white drop-shadow-lg hover:opacity-80 transition-opacity"
-        >
-          WikiTok
-        </button>
-      </div>
-
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
-        <button
-          onClick={() => setShowAbout(!showAbout)}
-          className="text-sm text-white/70 hover:text-white transition-colors"
-        >
-          About
-        </button>
-        <LanguageSelector />
-      </div>
+      <header className="fixed top-0 w-full z-50 py-6 p-2 ">
+        <div className="flex flex-col gap-2">
+          <div className="container mx-auto flex items-center justify-between">
+            <div className="logo">
+              <button
+                onClick={() => window.location.reload()}
+                className="text-2xl font-bold text-white drop-shadow-lg hover:opacity-80 transition-opacity"
+              >
+                WikiTok
+              </button>
+            </div>
+            <div className="hidden md:block">
+              <Search />
+            </div>
+            <div className="flex flex-col items-end gap-2">
+              <button
+                onClick={() => setShowAbout(!showAbout)}
+                className="text-sm text-white/70 hover:text-white transition-colors"
+              >
+                About
+              </button>
+              <LanguageSelector />
+            </div>
+          </div>
+          <div className="mt-6">
+            <Search />
+          </div>
+        </div>
+      </header>
 
       {showAbout && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -72,7 +84,7 @@ function App() {
               A TikTok-style interface for exploring random Wikipedia articles.
             </p>
             <p className="text-white/70">
-              Made with ❤️ by{' '}
+              Made with ❤️ by{" "}
               <a
                 href="https://x.com/Aizkmusic"
                 target="_blank"
@@ -83,7 +95,7 @@ function App() {
               </a>
             </p>
             <p className="text-white/70 mt-2">
-              Check out the code on{' '}
+              Check out the code on{" "}
               <a
                 href="https://github.com/IsaacGemal/wikitok"
                 target="_blank"
@@ -109,7 +121,7 @@ function App() {
       )}
       <Analytics />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
