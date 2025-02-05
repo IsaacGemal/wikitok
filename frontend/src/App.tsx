@@ -64,7 +64,7 @@ function App() {
               <LanguageSelector />
             </div>
           </div>
-          <div className="mt-6">
+          <div className="mt-6 md:hidden">
             <Search />
           </div>
         </div>
