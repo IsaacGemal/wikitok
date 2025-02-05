@@ -132,4 +132,11 @@ export const LANGUAGES = [
     api: "https://pl.wikipedia.org/w/api.php?",
     article: "https://pl.wikipedia.org/wiki/",
   },
+  {
+    id: "nl",
+    name: "Nederlands",
+    flag: "https://hatscripts.github.io/circle-flags/flags/nl.svg",
+    api: "https://nl.wikipedia.org/w/api.php?",
+    article: "https://nl.wikipedia.org/wiki/",
+  },
 ];

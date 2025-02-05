@@ -1,16 +1,6 @@
 import { useState, useCallback } from "react";
 import { useLocalization } from "./useLocalization";
-
-interface WikiArticle {
-  title: string;
-  extract: string;
-  pageid: number;
-  thumbnail?: {
-    source: string;
-    width: number;
-    height: number;
-  };
-}
+import type { WikiArticle } from "../components/WikiCard";
 
 const preloadImage = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -38,11 +28,12 @@ export function useWikiArticles() {
             format: "json",
             generator: "random",
             grnnamespace: "0",
-            prop: "extracts|pageimages",
+            prop: "extracts|pageimages|info",
+            inprop: "url",
             grnlimit: "20",
             exintro: "1",
-            exchars: "1000",
             exlimit: "max",
+            exsentences: "5",
             explaintext: "1",
             piprop: "thumbnail",
             pithumbsize: "400",
@@ -52,13 +43,17 @@ export function useWikiArticles() {
 
       const data = await response.json();
       const newArticles = Object.values(data.query.pages)
-        .map((page: any) => ({
+        .map((page: any): WikiArticle  => ({
           title: page.title,
           extract: page.extract,
           pageid: page.pageid,
           thumbnail: page.thumbnail,
+          url: page.canonicalurl,
         }))
-        .filter((article) => article.thumbnail);
+        .filter((article) => article.thumbnail
+                             && article.thumbnail.source
+                             && article.url
+                             && article.extract);
 
       await Promise.allSettled(
         newArticles
