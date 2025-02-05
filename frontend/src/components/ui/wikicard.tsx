@@ -1,4 +1,4 @@
-import { Share2 } from "lucide-react";
+import { ChevronDown, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocalization } from "../../hooks/useLocalization";
 
@@ -69,66 +69,77 @@ export function WikiCard({ article }: WikiCardProps) {
   };
 
   return (
-    <div className="h-screen w-full flex items-center justify-center snap-start relative">
-      <div className="h-full w-full relative">
-        {article.thumbnail ? (
-          <div className="absolute inset-0">
-            <img
-              loading="lazy"
-              src={article.thumbnail.source}
-              alt={article.title}
-              className={`w-full h-full object-cover transition-opacity duration-300 ${
-                imageLoaded ? "opacity-100" : "opacity-0"
-              }`}
-              onLoad={() => setImageLoaded(true)}
-              onError={(e) => {
-                console.error("Image failed to load:", e);
-                setImageLoaded(true); // Show content even if image fails
-              }}
-            />
-            {!imageLoaded && (
-              <div className="absolute inset-0 bg-gray-900 animate-pulse" />
-            )}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
-          </div>
-        ) : (
-          <div className="absolute inset-0 bg-gray-900" />
-        )}
-        {/* Content container with z-index to ensure it's above the image */}
-        <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
-          <div className="flex justify-between items-start mb-3">
-            <a
-              href={`${currentLanguage.article}${article.pageid}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-gray-200 transition-colors"
-            >
-              <h2 className="text-2xl font-bold drop-shadow-lg">
-                {article.title}
-              </h2>
-            </a>
+    <div className="card-container">
+      {article.thumbnail ? (
+        <div className="card-image">
+          <img
+            loading="lazy"
+            src={article.thumbnail.source}
+            alt={article.title}
+            className={`wiki-card-image ${imageLoaded ? "loaded" : ""}`}
+            onLoad={() => setImageLoaded(true)}
+            onError={(e) => {
+              console.error("Image failed to load:", e);
+              setImageLoaded(true);
+            }}
+          />
+          {!imageLoaded && <div className="image-placeholder" />}
+          <div className="image-overlay" />
+        </div>
+      ) : (
+        <div className="no-image-placeholder" />
+      )}
+      <div className="card-wrapper">
+        <div className="card-thumb">
+          {article.thumbnail ? (
+            <div className="card-image">
+              <img
+                loading="lazy"
+                src={article.thumbnail.source}
+                alt={article.title}
+                className={`wiki-card-image ${imageLoaded ? "loaded" : ""}`}
+                onLoad={() => setImageLoaded(true)}
+                onError={(e) => {
+                  console.error("Image failed to load:", e);
+                  setImageLoaded(true);
+                }}
+              />
+              {!imageLoaded && <div className="image-placeholder" />}
+              <div className="image-overlay" />
+            </div>
+          ) : (
+            <div className="no-image-placeholder" />
+          )}
+        </div>
+        <div className="card-content">
+          <div className="card-header">
+            <button className="card-title">
+              <label>
+                <h2 className="article-title">{article.title}</h2>
+                <div className="show-more" aria-label="Expand article">
+                  <ChevronDown className="share-icon" size={26} />
+                  <input type="checkbox" id="toggle" />
+                </div>
+              </label>
+            </button>
             <button
               onClick={handleShare}
-              className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+              className="button"
               aria-label="Share article"
             >
-              <Share2 className="w-5 h-5" />
+              <Share2 className="share-icon" size={18} />
             </button>
           </div>
           {articleContent ? (
-            <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">
-              {articleContent}
-            </p>
+            <p className="card-content-text">{articleContent}</p>
           ) : (
-            <p className="text-gray-100 mb-4 drop-shadow-lg italic">
-              Loading description...
-            </p>
+            <i className="loading-text">Loading description...</i>
           )}
           <a
             href={`${currentLanguage.article}${article.pageid}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
+            className="read-more"
           >
             Read more →
           </a>

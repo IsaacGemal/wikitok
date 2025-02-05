@@ -12,3 +12,14 @@
     border-color: rgb(var(--text-color), 0.3);
   }
 }
+
+@mixin Button {
+  height: 43px;
+  display: grid;
+  place-content: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  transition: 0.2s ease;
+  @include PressFeedback();
+  @include BorderHover();
+}
