@@ -91,6 +91,13 @@ export const LANGUAGES = [
     article: "https://hi.wikipedia.org/?curid=",
   },
   {
+    id: "id",
+    name: "Indonesian",
+    flag: "https://hatscripts.github.io/circle-flags/flags/id.svg",
+    api: "https://id.wikipedia.org/w/api.php?",
+    article: "https://id.wikipedia.org/?curid=",
+  },
+  {
     id: "eu",
     name: "Euskara",
     flag: "https://hatscripts.github.io/circle-flags/flags/es-pv.svg",
