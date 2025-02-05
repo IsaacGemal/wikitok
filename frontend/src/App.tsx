@@ -2,6 +2,8 @@ import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
 import { Loader2 } from 'lucide-react'
+import { Analytics } from "@vercel/analytics/react"
+import { LanguageSelector } from './components/LanguageSelector'
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
@@ -20,7 +22,8 @@ function App() {
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
-      threshold: 0.5,
+      threshold: 0.1,
+      rootMargin: '100px',
     })
 
     if (observerTarget.current) {
@@ -45,13 +48,14 @@ function App() {
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-50">
+      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
         <button
           onClick={() => setShowAbout(!showAbout)}
           className="text-sm text-white/70 hover:text-white transition-colors"
         >
           About
         </button>
+        <LanguageSelector />
       </div>
 
       {showAbout && (
@@ -64,7 +68,9 @@ function App() {
               ✕
             </button>
             <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
-            <p className="mb-4">A TikTok-style interface for exploring Wikipedia articles.</p>
+            <p className="mb-4">
+              A TikTok-style interface for exploring random Wikipedia articles.
+            </p>
             <p className="text-white/70">
               Made with ❤️ by{' '}
               <a
@@ -74,6 +80,17 @@ function App() {
                 className="text-white hover:underline"
               >
                 @Aizkmusic
+              </a>
+            </p>
+            <p className="text-white/70 mt-2">
+              Check out the code on{' '}
+              <a
+                href="https://github.com/IsaacGemal/wikitok"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:underline"
+              >
+                GitHub
               </a>
             </p>
           </div>
@@ -90,6 +107,7 @@ function App() {
           <span>Loading...</span>
         </div>
       )}
+      <Analytics />
     </div>
   )
 }

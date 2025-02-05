@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useLocalization } from "./useLocalization";
 
 interface WikiArticle {
   title: string;
@@ -23,19 +24,22 @@ const preloadImage = (src: string): Promise<void> => {
 export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
+  const [buffer, setBuffer] = useState<WikiArticle[]>([]);
+  const {currentLanguage} = useLocalization()
 
-  const fetchArticles = async () => {
+  const fetchArticles = async (forBuffer = false) => {
+    if (loading) return;
     setLoading(true);
     try {
       const response = await fetch(
-        "https://en.wikipedia.org/w/api.php?" +
+        currentLanguage.api +
           new URLSearchParams({
             action: "query",
             format: "json",
             generator: "random",
             grnnamespace: "0",
             prop: "extracts|pageimages",
-            grnlimit: "40",
+            grnlimit: "20",
             exintro: "1",
             exchars: "1000",
             exlimit: "max",
@@ -62,12 +66,27 @@ export function useWikiArticles() {
           .map((article) => preloadImage(article.thumbnail!.source))
       );
 
-      setArticles((prev) => [...prev, ...newArticles]);
+      if (forBuffer) {
+        setBuffer(newArticles);
+      } else {
+        setArticles((prev) => [...prev, ...newArticles]);
+        fetchArticles(true);
+      }
     } catch (error) {
       console.error("Error fetching articles:", error);
     }
     setLoading(false);
   };
 
-  return { articles, loading, fetchArticles };
+  const getMoreArticles = useCallback(() => {
+    if (buffer.length > 0) {
+      setArticles((prev) => [...prev, ...buffer]);
+      setBuffer([]);
+      fetchArticles(true);
+    } else {
+      fetchArticles(false);
+    }
+  }, [buffer]);
+
+  return { articles, loading, fetchArticles: getMoreArticles };
 }

@@ -1,6 +1,7 @@
 import { Share2 } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import { useMediaQuery } from 'react-responsive';
+import { useLocalization } from '../hooks/useLocalization';
 
 interface WikiArticle {
     title: string;
@@ -19,12 +20,13 @@ interface WikiCardProps {
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [articleContent, setArticleContent] = useState<string | null>(null);
+    const {currentLanguage} = useLocalization()
 
     useEffect(() => {
         const fetchArticleContent = async () => {
             try {
                 const response = await fetch(
-                    `https://en.wikipedia.org/w/api.php?` +
+                    currentLanguage.api +
                     `action=query&format=json&origin=*&prop=extracts&` +
                     `pageids=${article.pageid}&explaintext=1&exintro=1&` +
                     `exsentences=5`  // Limit to 5 sentences
@@ -62,14 +64,14 @@ export function WikiCard({ article }: WikiCardProps) {
                 await navigator.share({
                     title: article.title,
                     text: articleContent || '',
-                    url: `${url_base}?curid=${article.pageid}`
+                    url: `${currentLanguage.article}${article.pageid}`
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `${url_base}?curid=${article.pageid}`;
+            const url = `${currentLanguage.article}${article.pageid}`;
             await navigator.clipboard.writeText(url);
             alert('Link copied to clipboard!');
         }
@@ -81,6 +83,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 {article.thumbnail ? (
                     <div className="absolute inset-0">
                         <img
+                            loading="lazy"
                             src={article.thumbnail.source}
                             alt={article.title}
                             className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
@@ -94,7 +97,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         {!imageLoaded && (
                             <div className="absolute inset-0 bg-gray-900 animate-pulse" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
                     </div>
                 ) : (
                     <div className="absolute inset-0 bg-gray-900" />
@@ -103,7 +106,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`${url_base}?curid=${article.pageid}`}
+                            href={`${currentLanguage.article}${article.pageid}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
@@ -119,12 +122,12 @@ export function WikiCard({ article }: WikiCardProps) {
                         </button>
                     </div>
                     {articleContent ? (
-                        <p className="text-gray-100 mb-4 drop-shadow-lg">{articleContent}</p>
+                        <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{articleContent}</p>
                     ) : (
                         <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
                     )}
                     <a
-                        href={`${url_base}?curid=${article.pageid}`}
+                        href={`${currentLanguage.article}${article.pageid}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
@@ -135,4 +138,4 @@ export function WikiCard({ article }: WikiCardProps) {
             </div>
         </div>
     );
-} 
+}
