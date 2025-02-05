@@ -77,7 +77,7 @@ export function WikiCard({ article }: WikiCardProps) {
                             loading="lazy"
                             src={article.thumbnail.source}
                             alt={article.title}
-                            className={`w-full h-full object-cover transition-opacity duration-300 ${imageLoaded ? 'opacity-100' : 'opacity-0'
+                            className={`w-full h-full object-cover transition-opacity duration-300 bg-white ${imageLoaded ? 'opacity-100' : 'opacity-0'
                                 }`}
                             onLoad={() => setImageLoaded(true)}
                             onError={(e) => {
