@@ -104,4 +104,11 @@ export const LANGUAGES = [
     api: "https://tr.wikipedia.org/w/api.php?",
     article: "https://tr.wikipedia.org/?curid=",
   },
+  {
+    id: "id",
+    name: "Indonesia",
+    flag: "https://hatscripts.github.io/circle-flags/flags/id.svg",
+    api: "https://id.wikipedia.org/w/api.php?",
+    article: "https://id.wikipedia.org/?curid=",
+  },
 ];
