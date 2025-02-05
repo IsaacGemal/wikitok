@@ -32,7 +32,7 @@ export function useWikiArticles() {
     setLoading(true);
     try {
       const response = await fetch(
-        currentLanguage.api +
+        `https://${currentLanguage.subdomain}.wikipedia.org/w/api.php?`+
           new URLSearchParams({
             action: "query",
             format: "json",
