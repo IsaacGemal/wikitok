@@ -92,7 +92,7 @@ export const LANGUAGES = [
   },
   {
     id: "id",
-    name: "Bahasa Indonesia",
+    name: "Indonesia",
     flag: "https://hatscripts.github.io/circle-flags/flags/id.svg",
     api: "https://id.wikipedia.org/w/api.php?",
     article: "https://id.wikipedia.org/?curid=",
