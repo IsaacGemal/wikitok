@@ -1,4 +1,3 @@
-import { Share2 } from 'lucide-react';
 import { useState } from 'react';
 
 export interface WikiArticle {
@@ -15,9 +14,10 @@ export interface WikiArticle {
 
 interface WikiCardProps {
     article: WikiArticle;
+    onViewArticle: () => void;
 }
 
-export function WikiCard({ article }: WikiCardProps) {
+export function WikiCard({ article, onViewArticle }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
 
     // Add debugging log
@@ -25,24 +25,6 @@ export function WikiCard({ article }: WikiCardProps) {
         title: article.title,
         pageid: article.pageid
     });
-
-    const handleShare = async () => {
-        if (navigator.share) {
-            try {
-                await navigator.share({
-                    title: article.title,
-                    text: article.extract || '',
-                    url: article.url
-                });
-            } catch (error) {
-                console.error('Error sharing:', error);
-            }
-        } else {
-            // Fallback: Copy to clipboard
-            await navigator.clipboard.writeText(article.url);
-            alert('Link copied to clipboard!');
-        }
-    };
 
     return (
         <div className="h-screen w-full flex items-center justify-center snap-start relative">
@@ -72,31 +54,20 @@ export function WikiCard({ article }: WikiCardProps) {
                 {/* Content container with z-index to ensure it's above the image */}
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
-                        <a
-                            href={article.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="hover:text-gray-200 transition-colors"
+                        <button
+                            onClick={onViewArticle}
+                            className="text-left hover:text-gray-200 transition-colors"
                         >
                             <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
-                        </a>
-                        <button
-                            onClick={handleShare}
-                            className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                            aria-label="Share article"
-                        >
-                            <Share2 className="w-5 h-5" />
                         </button>
                     </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
-                    <a
-                        href={article.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <button
+                        onClick={onViewArticle}
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
                     >
                         Read more →
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>

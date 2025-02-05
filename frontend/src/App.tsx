@@ -1,12 +1,15 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
-import { WikiCard } from './components/WikiCard'
+import { WikiCard, WikiArticle } from './components/WikiCard'
 import { useWikiArticles } from './hooks/useWikiArticles'
 import { Loader2 } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
 import { LanguageSelector } from './components/LanguageSelector'
+import { WikiViewer } from './components/WikiViewer'
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
+  const [currentArticle, setCurrentArticle] = useState<WikiArticle | null>(null)
+  const [currentIndex, setCurrentIndex] = useState<number>(-1)
   const { articles, loading, fetchArticles } = useWikiArticles()
   const observerTarget = useRef(null)
 
@@ -37,8 +40,63 @@ function App() {
     fetchArticles()
   }, [])
 
+  const handleViewArticle = (article: WikiArticle, index: number) => {
+    setCurrentArticle(article)
+    setCurrentIndex(index)
+  }
+
+  const scrollToArticle = (index: number) => {
+    const articles = document.querySelectorAll('.snap-start')
+    if (articles[index]) {
+      articles[index].scrollIntoView({ behavior: 'smooth' })
+    }
+  }
+
+  const handleNextArticle = () => {
+    if (currentIndex < articles.length - 1) {
+      setCurrentArticle(articles[currentIndex + 1])
+      setCurrentIndex(currentIndex + 1)
+      scrollToArticle(currentIndex + 1)
+    } else {
+      setCurrentArticle(null)
+      setCurrentIndex(-1)
+      scrollToArticle(0)
+    }
+  }
+
+  const handlePreviousArticle = () => {
+    if (currentIndex > 0) {
+      setCurrentArticle(articles[currentIndex - 1])
+      setCurrentIndex(currentIndex - 1)
+      scrollToArticle(currentIndex - 1)
+    } else {
+      setCurrentArticle(null)
+      setCurrentIndex(-1)
+      scrollToArticle(0)
+    }
+  }
+
+  const handleShare = async () => {
+    if (!currentArticle) return
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: currentArticle.title,
+          text: currentArticle.extract || '',
+          url: currentArticle.url
+        })
+      } catch (error) {
+        console.error('Error sharing:', error)
+      }
+    } else {
+      await navigator.clipboard.writeText(currentArticle.url)
+      alert('Link copied to clipboard!')
+    }
+  }
+
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory scroll-smooth">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
@@ -97,8 +155,25 @@ function App() {
         </div>
       )}
 
-      {articles.map((article) => (
-        <WikiCard key={article.pageid} article={article} />
+      {currentArticle && (
+        <WikiViewer
+          article={currentArticle}
+          onClose={() => {
+            setCurrentArticle(null)
+            setCurrentIndex(-1)
+          }}
+          onNext={handleNextArticle}
+          onPrevious={handlePreviousArticle}
+          onShare={handleShare}
+        />
+      )}
+
+      {articles.map((article, index) => (
+        <WikiCard
+          key={article.pageid}
+          article={article}
+          onViewArticle={() => handleViewArticle(article, index)}
+        />
       ))}
       <div ref={observerTarget} className="h-10 -mt-1" />
       {loading && (
