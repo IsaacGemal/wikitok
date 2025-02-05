@@ -104,4 +104,11 @@ export const LANGUAGES = [
     api: "https://eu.wikipedia.org/w/api.php?",
     article: "https://eu.wikipedia.org/?curid=",
   },
+  {
+    id: "tr",
+    name: "Türkçe",
+    flag: "https://hatscripts.github.io/circle-flags/flags/tr.svg",
+    api: "https://tr.wikipedia.org/w/api.php?",
+    article: "https://tr.wikipedia.org/?curid=",
+  },
 ];
