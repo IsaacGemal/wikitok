@@ -90,4 +90,11 @@ export const LANGUAGES = [
     api: "https://hi.wikipedia.org/w/api.php?",
     article: "https://hi.wikipedia.org/?curid=",
   },
+  {
+    id: "eu",
+    name: "Euskara",
+    flag: "https://hatscripts.github.io/circle-flags/flags/es-pv.svg",
+    api: "https://eu.wikipedia.org/w/api.php?",
+    article: "https://eu.wikipedia.org/?curid=",
+  },
 ];
