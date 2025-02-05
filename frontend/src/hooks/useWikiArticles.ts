@@ -41,8 +41,8 @@ export function useWikiArticles() {
             prop: "extracts|pageimages",
             grnlimit: "20",
             exintro: "1",
-            exchars: "1000",
             exlimit: "max",
+            exsentences: "5",
             explaintext: "1",
             piprop: "thumbnail",
             pithumbsize: "400",
@@ -58,7 +58,7 @@ export function useWikiArticles() {
           pageid: page.pageid,
           thumbnail: page.thumbnail,
         }))
-        .filter((article) => article.thumbnail);
+        .filter((article) => article.thumbnail && article.extract);
 
       await Promise.allSettled(
         newArticles
