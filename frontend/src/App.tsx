@@ -47,10 +47,17 @@ function App() {
   )
 
   const handleExport = () => {
-    const dataStr = JSON.stringify(likedArticles, null, 2);
+    const simplifiedArticles = likedArticles.map(article => ({
+      title: article.title,
+      url: article.url,
+      extract: article.extract,
+      thumbnail: article.thumbnail?.source || null
+    }));
+
+    const dataStr = JSON.stringify(simplifiedArticles, null, 2);
     const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = `wiki-likes-${new Date().toISOString().split('T')[0]}.json`;
+    const exportFileDefaultName = `wikitok-favorites-${new Date().toISOString().split('T')[0]}.json`;
 
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -187,7 +194,7 @@ function App() {
                           </a>
                           <button
                             onClick={() => toggleLike(article)}
-                            className="text-white/50 hover:text-white/90 p-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
+                            className="text-white/50 hover:text-white/90 p-1 rounded-full md:opacity-0 md:group-hover:opacity-100 transition-opacity"
                             aria-label="Remove from likes"
                           >
                             <X className="w-4 h-4" />
