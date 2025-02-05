@@ -1,52 +1,48 @@
-import { useState, useEffect, useRef } from "react";
-import { LANGUAGES } from "../languages";
-import { useLocalization } from "../hooks/useLocalization";
+import { useState } from 'react';
+import { X } from 'lucide-react';
+import { useLocalization } from '../hooks/useLocalization';
+import { LANGUAGES } from '../languages';
 
-export function LanguageSelector() {
-  const [showDropdown, setShowDropdown] = useState(false);
-  const { setLanguage } = useLocalization();
-  const dropdownRef = useRef<HTMLDivElement>(null);
+interface LanguageSelectorProps {
+  onClose: () => void;
+}
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setShowDropdown(false);
-    }
+export function LanguageSelector({ onClose }: LanguageSelectorProps) {
+  const { currentLanguage, setLanguage } = useLocalization();
+
+  const handleLanguageChange = (languageId: string) => {
+    setLanguage(languageId);
+    onClose();
   };
 
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, []);
-
   return (
-    <div
-      className="relative inline-flex items-center"
-      onClick={() => setShowDropdown(!showDropdown)}
-      ref={dropdownRef}
-    >
-      <button className="text-sm text-white/70 hover:text-white transition-colors">
-        Language
-      </button>
-
-      {showDropdown && (
-        <div className="absolute overflow-hidden py-2 w-30 right-0 top-full mt-1 bg-gray-900 rounded-md shadow-lg">
-          {LANGUAGES.map((language) => (
-            <button
-              key={language.id}
-              onClick={() => setLanguage(language.id)}
-              className="w-full items-center flex gap-3 px-3 py-1 hover:bg-gray-800"
-            >
-              <img className="w-5" src={language.flag} alt={language.name} />
-              <span className="text-xs">{language.name}</span>
-            </button>
-          ))}
-        </div>
-      )}
+    <div className="bg-gray-900 rounded-lg shadow-lg p-4 w-64">
+      <div className="flex justify-between items-center mb-4">
+        <h2 className="text-lg font-semibold text-white">Language</h2>
+        <button
+          onClick={onClose}
+          className="p-1 rounded-full hover:bg-gray-800 transition-colors"
+          aria-label="Close language menu"
+        >
+          <X className="w-5 h-5 text-white/70 hover:text-white" />
+        </button>
+      </div>
+      <div className="space-y-2">
+        {LANGUAGES.map((lang) => (
+          <button
+            key={lang.id}
+            onClick={() => handleLanguageChange(lang.id)}
+            className={`w-full text-left px-3 py-2 rounded-md transition-colors flex items-center gap-3 ${
+              currentLanguage.id === lang.id
+                ? 'bg-gray-800 text-white'
+                : 'text-white/70 hover:bg-gray-800 hover:text-white'
+            }`}
+          >
+            <img className="w-5" src={lang.flag} alt={lang.name} />
+            <span>{lang.name}</span>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

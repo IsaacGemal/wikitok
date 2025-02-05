@@ -1,5 +1,4 @@
 import { useState, useCallback } from "react";
-import { useLocalization } from "./useLocalization";
 
 interface WikiArticle {
   title: string;
@@ -25,14 +24,13 @@ export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
-  const {currentLanguage} = useLocalization()
 
   const fetchArticles = async (forBuffer = false) => {
     if (loading) return;
     setLoading(true);
     try {
       const response = await fetch(
-        currentLanguage.api +
+        "https://en.wikipedia.org/w/api.php?" +
           new URLSearchParams({
             action: "query",
             format: "json",
