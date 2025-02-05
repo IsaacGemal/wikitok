@@ -9,6 +9,7 @@ function App() {
   const [showAbout, setShowAbout] = useState(false)
   const { articles, loading, fetchArticles } = useWikiArticles()
   const observerTarget = useRef(null)
+  const containerRef = useRef<HTMLDivElement>(null)
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
@@ -37,8 +38,25 @@ function App() {
     fetchArticles()
   }, [])
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (!containerRef.current) return;
+      
+      if (event.key === 'ArrowRight') {
+        // Scroll down (next card)
+        containerRef.current.scrollBy({ top: window.innerHeight, behavior: 'smooth' });
+      } else if (event.key === 'ArrowLeft') {
+        // Scroll up (previous card)
+        containerRef.current.scrollBy({ top: -window.innerHeight, behavior: 'smooth' });
+      }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+  
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+    <div ref={containerRef} className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
