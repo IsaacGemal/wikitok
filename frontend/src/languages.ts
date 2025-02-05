@@ -106,10 +106,16 @@ export const LANGUAGES = [
   },
   {
     id: "id",
-
     name: "Indonesian",
     flag: "https://hatscripts.github.io/circle-flags/flags/id.svg",
     api: "https://id.wikipedia.org/w/api.php?",
     article: "https://id.wikipedia.org/wiki/",
+  },
+  {
+    id: "pl",
+    name: "Polski",
+    flag: "https://hatscripts.github.io/circle-flags/flags/pl.svg",
+    api: "https://pl.wikipedia.org/w/api.php?",
+    article: "https://pl.wikipedia.org/wiki/",
   },
 ];
