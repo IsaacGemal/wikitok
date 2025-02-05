@@ -4,10 +4,13 @@ import { useWikiArticles } from './hooks/useWikiArticles'
 import { Loader2 } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
 import { LanguageSelector } from './components/LanguageSelector'
+import { useLikedArticles } from './hooks/useLikedArticles'
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
+  const [showLikes, setShowLikes] = useState(false)
   const { articles, loading, fetchArticles } = useWikiArticles()
+  const { likedArticles } = useLikedArticles()
   const observerTarget = useRef(null)
 
   const handleObserver = useCallback(
@@ -55,6 +58,12 @@ function App() {
         >
           About
         </button>
+        <button
+          onClick={() => setShowLikes(!showLikes)}
+          className="text-sm text-white/70 hover:text-white transition-colors"
+        >
+          Likes
+        </button>
         <LanguageSelector />
       </div>
 
@@ -93,6 +102,50 @@ function App() {
                 GitHub
               </a>
             </p>
+          </div>
+        </div>
+      )}
+
+      {showLikes && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-gray-900 p-6 rounded-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto relative">
+            <button
+              onClick={() => setShowLikes(false)}
+              className="absolute top-2 right-2 text-white/70 hover:text-white"
+            >
+              ✕
+            </button>
+            <h2 className="text-xl font-bold mb-4">Liked Articles</h2>
+            {likedArticles.length === 0 ? (
+              <p className="text-white/70">No liked articles yet.</p>
+            ) : (
+              <div className="space-y-4">
+                {likedArticles.map((article) => (
+                  <div key={article.pageid} className="flex gap-4 items-start">
+                    {article.thumbnail && (
+                      <img
+                        src={article.thumbnail.source}
+                        alt={article.title}
+                        className="w-20 h-20 object-cover rounded"
+                      />
+                    )}
+                    <div>
+                      <a
+                        href={article.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-bold hover:text-gray-200"
+                      >
+                        {article.title}
+                      </a>
+                      <p className="text-sm text-white/70 line-clamp-2">
+                        {article.extract}
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       )}
