@@ -1,10 +1,10 @@
 import { useEffect, useRef, useCallback, useState } from 'react'
 import { WikiCard } from './components/WikiCard'
-import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2, Search, X } from 'lucide-react'
+import { Loader2, Search, X, Download } from 'lucide-react'
 import { Analytics } from "@vercel/analytics/react"
 import { LanguageSelector } from './components/LanguageSelector'
-import { useLikedArticles } from './hooks/useLikedArticles'
+import { useLikedArticles } from './contexts/LikedArticlesContext'
+import { useWikiArticles } from './hooks/useWikiArticles'
 
 function App() {
   const [showAbout, setShowAbout] = useState(false)
@@ -45,6 +45,18 @@ function App() {
     article.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
     article.extract.toLowerCase().includes(searchQuery.toLowerCase())
   )
+
+  const handleExport = () => {
+    const dataStr = JSON.stringify(likedArticles, null, 2);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
+
+    const exportFileDefaultName = `wiki-likes-${new Date().toISOString().split('T')[0]}.json`;
+
+    const linkElement = document.createElement('a');
+    linkElement.setAttribute('href', dataUri);
+    linkElement.setAttribute('download', exportFileDefaultName);
+    linkElement.click();
+  };
 
   return (
     <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
@@ -121,7 +133,20 @@ function App() {
             >
               ✕
             </button>
-            <h2 className="text-xl font-bold mb-4">Liked Articles</h2>
+
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">Liked Articles</h2>
+              {likedArticles.length > 0 && (
+                <button
+                  onClick={handleExport}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+                  title="Export liked articles"
+                >
+                  <Download className="w-4 h-4" />
+                  Export
+                </button>
+              )}
+            </div>
 
             <div className="relative mb-4">
               <input

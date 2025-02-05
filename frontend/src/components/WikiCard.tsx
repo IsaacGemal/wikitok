@@ -1,6 +1,6 @@
 import { Share2, Heart } from 'lucide-react';
 import { useState } from 'react';
-import { useLikedArticles } from '../hooks/useLikedArticles';
+import { useLikedArticles } from '../contexts/LikedArticlesContext';
 
 export interface WikiArticle {
     title: string;
@@ -86,8 +86,8 @@ export function WikiCard({ article }: WikiCardProps) {
                             <button
                                 onClick={() => toggleLike(article)}
                                 className={`p-2 rounded-full backdrop-blur-sm transition-colors ${isLiked(article.pageid)
-                                        ? 'bg-red-500 hover:bg-red-600'
-                                        : 'bg-white/10 hover:bg-white/20'
+                                    ? 'bg-red-500 hover:bg-red-600'
+                                    : 'bg-white/10 hover:bg-white/20'
                                     }`}
                                 aria-label="Like article"
                             >
