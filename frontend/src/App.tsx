@@ -1,44 +1,44 @@
-import { useEffect, useRef, useCallback, useState } from 'react'
-import { WikiCard } from './components/WikiCard'
-import { useWikiArticles } from './hooks/useWikiArticles'
-import { Loader2 } from 'lucide-react'
-import { Analytics } from "@vercel/analytics/react"
-import { LanguageSelector } from './components/LanguageSelector'
+import { useEffect, useRef, useCallback, useState } from "react";
+import { WikiCard } from "./components/WikiCard";
+import { useWikiArticles } from "./hooks/useWikiArticles";
+import { Loader2 } from "lucide-react";
+import { Analytics } from "@vercel/analytics/react";
+import { LanguageSelector } from "./components/LanguageSelector";
 
 function App() {
-  const [showAbout, setShowAbout] = useState(false)
-  const { articles, loading, fetchArticles } = useWikiArticles()
-  const observerTarget = useRef(null)
+  const [showAbout, setShowAbout] = useState(false);
+  const { articles, loading, fetchArticles } = useWikiArticles();
+  const observerTarget = useRef(null);
 
   const handleObserver = useCallback(
     (entries: IntersectionObserverEntry[]) => {
-      const [target] = entries
+      const [target] = entries;
       if (target.isIntersecting && !loading) {
-        fetchArticles()
+        fetchArticles();
       }
     },
-    [loading, fetchArticles]
-  )
+    [loading, fetchArticles],
+  );
 
   useEffect(() => {
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 0.1,
-      rootMargin: '100px',
-    })
+      rootMargin: "100px",
+    });
 
     if (observerTarget.current) {
-      observer.observe(observerTarget.current)
+      observer.observe(observerTarget.current);
     }
 
-    return () => observer.disconnect()
-  }, [handleObserver])
+    return () => observer.disconnect();
+  }, [handleObserver]);
 
   useEffect(() => {
-    fetchArticles()
-  }, [])
+    fetchArticles();
+  }, []);
 
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+    <div className="h-screen md:max-w-lg mx-auto w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
@@ -72,7 +72,7 @@ function App() {
               A TikTok-style interface for exploring random Wikipedia articles.
             </p>
             <p className="text-white/70">
-              Made with ❤️ by{' '}
+              Made with ❤️ by{" "}
               <a
                 href="https://x.com/Aizkmusic"
                 target="_blank"
@@ -83,7 +83,7 @@ function App() {
               </a>
             </p>
             <p className="text-white/70 mt-2">
-              Check out the code on{' '}
+              Check out the code on{" "}
               <a
                 href="https://github.com/IsaacGemal/wikitok"
                 target="_blank"
@@ -109,7 +109,7 @@ function App() {
       )}
       <Analytics />
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
