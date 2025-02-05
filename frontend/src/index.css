@@ -1,10 +1,12 @@
 @import "tailwindcss";
 
-html, body {
-  overscroll-behavior-y: contain;
-  overflow: hidden;
+html,
+body {
+    overscroll-behavior-y: contain;
+    overflow: hidden;
+    @apply bg-gray-900;
 }
 
 ::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
