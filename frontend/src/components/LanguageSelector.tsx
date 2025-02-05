@@ -32,17 +32,16 @@ export function LanguageSelector() {
       <button className="text-sm text-white/70 hover:text-white transition-colors">
         Language
       </button>
-
       {showDropdown && (
         <div className="absolute overflow-y-auto max-h-[205px] py-2 w-30 right-0 top-full mt-1 bg-gray-900 rounded-md shadow-lg">
           {LANGUAGES.map((language) => (
             <button
               key={language.id}
               onClick={() => setLanguage(language.id)}
-              className="w-full items-center flex gap-3 px-3 py-1 hover:bg-gray-800"
+              className="w-full items-center flex gap-3 px-3 py-1 hover:bg-white/10"
             >
               <img className="w-5" src={language.flag} alt={language.name} />
-              <span className="text-xs">{language.name}</span>
+              <span className="text-xs text-white">{language.name}</span>
             </button>
           ))}
         </div>

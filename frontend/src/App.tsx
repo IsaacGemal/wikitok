@@ -38,28 +38,23 @@ function App() {
   }, [])
 
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
-      <div className="fixed top-4 left-4 z-50">
-        <button
-          onClick={() => window.location.reload()}
-          className="text-2xl font-bold text-white drop-shadow-lg hover:opacity-80 transition-opacity"
+    <div className="h-screen w-full bg-white overflow-y-scroll snap-y snap-mandatory">
+      {/* Sticky header bar */}
+      <div className="fixed top-0 left-0 right-0 h-14 bg-black flex items-center justify-between px-4 z-50">
+        <button 
+          onClick={() => setShowAbout(true)}
+          className="text-white font-bold hover:text-gray-200 transition-colors"
         >
           WikiTok
         </button>
+        <div className="flex items-center gap-2">
+          <LanguageSelector />
+        </div>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
-        <button
-          onClick={() => setShowAbout(!showAbout)}
-          className="text-sm text-white/70 hover:text-white transition-colors"
-        >
-          About
-        </button>
-        <LanguageSelector />
-      </div>
-
+      {/* About Modal */}
       {showAbout && (
-        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[60] flex items-center justify-center p-4">
           <div className="bg-gray-900 p-6 rounded-lg max-w-md relative">
             <button
               onClick={() => setShowAbout(false)}
@@ -67,8 +62,8 @@ function App() {
             >
               ✕
             </button>
-            <h2 className="text-xl font-bold mb-4">About WikiTok</h2>
-            <p className="mb-4">
+            <h2 className="text-xl font-bold mb-4 text-white">About WikiTok</h2>
+            <p className="mb-4 text-white">
               A TikTok-style interface for exploring random Wikipedia articles.
             </p>
             <p className="text-white/70">
@@ -97,16 +92,26 @@ function App() {
         </div>
       )}
 
-      {articles.map((article) => (
-        <WikiCard key={article.pageid} article={article} />
-      ))}
-      <div ref={observerTarget} className="h-10 -mt-1" />
-      {loading && (
-        <div className="h-screen w-full flex items-center justify-center gap-2">
-          <Loader2 className="h-6 w-6 animate-spin" />
-          <span>Loading...</span>
-        </div>
-      )}
+      {/* Add padding to content to account for header */}
+      <div className="pt-14">
+        {articles.map((article, index) => (
+          <WikiCard 
+            key={article.pageid} 
+            article={article}
+            isFirst={index === 0}
+            isLast={index === articles.length - 1}
+          />
+        ))}
+        
+        <div ref={observerTarget} className="h-10" />
+        
+        {loading && (
+          <div className="h-screen w-full flex items-center justify-center gap-2 text-black">
+            <Loader2 className="h-6 w-6 animate-spin" />
+            <span>Loading...</span>
+          </div>
+        )}
+      </div>
       <Analytics />
     </div>
   )
