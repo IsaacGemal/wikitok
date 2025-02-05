@@ -6,7 +6,7 @@ A TikTok-style interface for exploring random Wikipedia articles in multiple lan
 
 - Vertical scrolling feed of random Wikipedia articles
 - Support for 14 languages including English, Spanish, French, German, Chinese, Japanese and more
-- Article previews with images, titles and excerpts 
+- Article previews with images, titles and excerpts
 - Share articles directly or copy links
 - Language selector with country flags
 - Preloading of images and content for smooth scrolling
@@ -20,6 +20,8 @@ A TikTok-style interface for exploring random Wikipedia articles in multiple lan
 - Vite
 
 ## Development
+
+Run commands below in `/frontend` folder.
 
 1. Install dependencies:
 
