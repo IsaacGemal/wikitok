@@ -16,6 +16,8 @@ interface WikiCardProps {
     article: WikiArticle;
 }
 
+const toWikiUrl = (title: string) => encodeURIComponent(title.replace(/ /g, '_'))
+
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [articleContent, setArticleContent] = useState<string | null>(null);
@@ -55,14 +57,14 @@ export function WikiCard({ article }: WikiCardProps) {
                 await navigator.share({
                     title: article.title,
                     text: articleContent || '',
-                    url: `${currentLanguage.article}${article.pageid}`
+                    url: `${currentLanguage.article}${toWikiUrl(article.title)}`
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `${currentLanguage.article}${article.pageid}`;
+            const url = `${currentLanguage.article}${toWikiUrl(article.title)}`;
             await navigator.clipboard.writeText(url);
             alert('Link copied to clipboard!');
         }
@@ -97,7 +99,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`${currentLanguage.article}${article.pageid}`}
+                            href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
@@ -118,7 +120,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         <p className="text-gray-100 mb-4 drop-shadow-lg italic">Loading description...</p>
                     )}
                     <a
-                        href={`${currentLanguage.article}${article.pageid}`}
+                        href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
