@@ -1,12 +1,12 @@
 import { Share2 } from 'lucide-react';
 import { useState } from 'react';
-import { useLocalization } from '../hooks/useLocalization';
 
-interface WikiArticle {
+export interface WikiArticle {
     title: string;
     extract: string;
     pageid: number;
-    thumbnail?: {
+    url: string;
+    thumbnail: {
         source: string;
         width: number;
         height: number;
@@ -17,11 +17,8 @@ interface WikiCardProps {
     article: WikiArticle;
 }
 
-const toWikiUrl = (title: string) => encodeURIComponent(title.replace(/ /g, '_'))
-
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
-    const {currentLanguage} = useLocalization()
 
     // Add debugging log
     console.log('Article data:', {
@@ -35,15 +32,14 @@ export function WikiCard({ article }: WikiCardProps) {
                 await navigator.share({
                     title: article.title,
                     text: article.extract || '',
-                    url: `${currentLanguage.article}${toWikiUrl(article.title)}`
+                    url: article.url
                 });
             } catch (error) {
                 console.error('Error sharing:', error);
             }
         } else {
             // Fallback: Copy to clipboard
-            const url = `${currentLanguage.article}${toWikiUrl(article.title)}`;
-            await navigator.clipboard.writeText(url);
+            await navigator.clipboard.writeText(article.url);
             alert('Link copied to clipboard!');
         }
     };
@@ -77,7 +73,7 @@ export function WikiCard({ article }: WikiCardProps) {
                 <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
-                            href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
+                            href={article.url}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="hover:text-gray-200 transition-colors"
@@ -94,7 +90,7 @@ export function WikiCard({ article }: WikiCardProps) {
                     </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
                     <a
-                        href={`${currentLanguage.article}${toWikiUrl(article.title)}`}
+                        href={article.url}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
