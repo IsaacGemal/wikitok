@@ -1,0 +1,14 @@
+@mixin PressFeedback {
+  will-change: transform;
+  transform-origin: center;
+
+  &:active {
+    transform: scale(0.95);
+  }
+}
+
+@mixin BorderHover {
+  &:hover {
+    border-color: rgb(var(--text-color), 0.3);
+  }
+}

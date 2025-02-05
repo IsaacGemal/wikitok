@@ -1,0 +1,109 @@
+@use "../../mixin" as *;
+
+:root {
+  --header-pad: clamp(12px, 2vw, 28px);
+}
+
+.loader {
+  display: flex;
+  width: 100%;
+  min-height: clamp(100px, 100dvh, 100dvh);
+  place-content: center;
+  align-items: center;
+
+  &.pending {
+    min-height: 150px;
+  }
+
+  .spinner {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+
+    svg {
+      animation: spin 1s linear infinite;
+    }
+
+    span {
+      font-size: 18px;
+    }
+  }
+}
+
+.header {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  display: flex;
+  padding: var(--header-pad);
+  justify-content: space-between;
+  align-items: center;
+
+  .button {
+    background-color: rgb(var(--fg-color), 0.9);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(var(--text-color), 0.15);
+  }
+
+  &-name {
+    button {
+      border-radius: 10px;
+      padding: 8px clamp(24px, 5vw, 28px);
+      font-size: clamp(17px, 2vw, 19px);
+      font-weight: 600;
+    }
+  }
+
+  nav {
+    display: flex;
+    gap: 12px;
+
+    .button {
+      height: 43px;
+      display: grid;
+      place-content: center;
+      aspect-ratio: 1;
+      border-radius: 50%;
+      transition: 0.2s ease;
+      @include PressFeedback();
+      @include BorderHover();
+
+      svg {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+      }
+    }
+  }
+
+  .dropdown {
+    &-conteiner {
+      position: relative;
+    }
+    & {
+      position: absolute;
+      right: 0;
+      margin: 14px var(--header-pad);
+      background-color: rgb(var(--fg-color));
+      display: grid;
+      border-radius: 10px;
+      border: 1px solid rgb(var(--text-color), 0.15);
+      max-height: calc(95dvh - (2 * var(--header-pad)) - 80px);
+      overflow-y: auto;
+      scrollbar-color: rgba(var(--text-color), 0.2) transparent;
+      scrollbar-width: thin;
+    }
+    button {
+      display: flex;
+      gap: 10px;
+      padding: 12px 24px 12px 12px;
+      align-items: center;
+
+      &:hover {
+        background-color: rgba(var(--text-color), 0.1);
+      }
+    }
+  }
+}

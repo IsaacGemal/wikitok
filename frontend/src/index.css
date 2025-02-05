@@ -1,8 +1,16 @@
 @import "tailwindcss";
 
-html, body {
+:root {
+  --bg-color: 0, 0, 0;
+  --fg-color: 28, 30, 33;
+  --text-color: 246, 246, 246;
+}
+
+html,
+body {
   overscroll-behavior-y: contain;
   overflow: hidden;
+  color: rgb(var(--text-color));
 }
 
 ::-webkit-scrollbar {

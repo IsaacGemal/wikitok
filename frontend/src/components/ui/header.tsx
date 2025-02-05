@@ -1,29 +1,24 @@
 import { useState } from "react";
-import { LanguageSelector } from "../LanguageSelector";
+import { Info } from "lucide-react";
+import { LanguageSelector } from "./language-selector";
 
 export default function Header() {
   const [showAbout, setShowAbout] = useState(false);
 
   return (
-    <header>
-      <div>
-        <button
-          onClick={() => window.location.reload()}
-          className="text-2xl font-bold text-white drop-shadow-lg hover:opacity-80 transition-opacity"
-        >
+    <header className="header">
+      <div className="header-name">
+        <button className="button" onClick={() => window.location.reload()}>
           WikiTok
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
-        <button
-          onClick={() => setShowAbout(!showAbout)}
-          className="text-sm text-white/70 hover:text-white transition-colors"
-        >
-          About
+      <nav className="menu">
+        <button onClick={() => setShowAbout(!showAbout)} className="button">
+          <Info />
         </button>
         <LanguageSelector />
-      </div>
+      </nav>
 
       {showAbout && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
