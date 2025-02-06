@@ -1,5 +1,6 @@
-import { Share2 } from 'lucide-react';
+import { Share2, Heart } from 'lucide-react';
 import { useState } from 'react';
+import { useLikedArticles } from '../contexts/LikedArticlesContext';
 
 export interface WikiArticle {
     title: string;
@@ -19,6 +20,7 @@ interface WikiCardProps {
 
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
+    const { toggleLike, isLiked } = useLikedArticles();
 
     // Add debugging log
     console.log('Article data:', {
@@ -80,13 +82,27 @@ export function WikiCard({ article }: WikiCardProps) {
                         >
                             <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
                         </a>
-                        <button
-                            onClick={handleShare}
-                            className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                            aria-label="Share article"
-                        >
-                            <Share2 className="w-5 h-5" />
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => toggleLike(article)}
+                                className={`p-2 rounded-full backdrop-blur-sm transition-colors ${isLiked(article.pageid)
+                                    ? 'bg-red-500 hover:bg-red-600'
+                                    : 'bg-white/10 hover:bg-white/20'
+                                    }`}
+                                aria-label="Like article"
+                            >
+                                <Heart
+                                    className={`w-5 h-5 ${isLiked(article.pageid) ? 'fill-white' : ''}`}
+                                />
+                            </button>
+                            <button
+                                onClick={handleShare}
+                                className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+                                aria-label="Share article"
+                            >
+                                <Share2 className="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
                     <a
