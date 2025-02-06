@@ -2,6 +2,7 @@
 
 :root {
   --header-pad: clamp(12px, 2vw, 28px);
+  color-scheme: dark dark;
 }
 
 .loader {
@@ -50,7 +51,7 @@
   &-name {
     button {
       border-radius: 8px;
-      padding: 8px clamp(24px, 5vw, 28px);
+      padding: 8px clamp(26px, 5vw, 28px);
       font-size: clamp(17px, 2vw, 19px);
       font-weight: 600;
     }
@@ -132,10 +133,12 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    width: calc(100% - (2 * var(--header-pad)));
+    max-width: 620px;
   }
 
   &-thumb {
-    width: 100px;
+    width: clamp(80px, 10vw, 100px);
     border: 4px solid rgb(var(--fg-color));
     background-color: rgb(var(--bg-color));
     aspect-ratio: 1;
@@ -154,8 +157,7 @@
     border-radius: 10px;
     border: 1px solid rgb(var(--text-color), 0.15);
     display: grid;
-    width: calc(100% - (2 * var(--header-pad)));
-    max-width: 620px;
+
     box-sizing: border-box;
     padding: var(--header-pad);
     gap: 4px;
@@ -163,7 +165,7 @@
     &:has(input:checked) {
       p {
         height: fit-content;
-        padding: 6px 0;
+        margin: 8px 0;
       }
     }
 
@@ -176,6 +178,8 @@
       -webkit-box-orient: vertical;
       display: -webkit-box;
       overflow: hidden;
+      color: rgba(var(--text-color), 0.9);
+      font-size: 15px;
     }
 
     .read-more {
@@ -208,7 +212,6 @@
 
     svg {
       transition: 0.3s;
-      margin-top: 4px;
     }
 
     &:has(input:checked) {
@@ -220,7 +223,7 @@
 
   &-header {
     display: flex;
-    gap: 24px;
+    gap: 16px;
     // justify-content: space-between;
 
     .show-more {
