@@ -1,18 +1,18 @@
-import { ChevronDown, Heart, Share2 } from "lucide-react";
+import { Heart, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocalization } from "../../hooks/useLocalization";
 import { useLikedArticles } from "../../contexts/LikedArticlesContext";
 
-const getDeviceType = () => {
-  const userAgent = navigator.userAgent.toLowerCase();
-  if (/mobile|android|iphone|ipad|phone/i.test(userAgent)) {
-    return "mobile";
-  } else if (/tablet|ipad/i.test(userAgent)) {
-    return "tablet";
-  } else {
-    return "desktop";
-  }
-};
+// const getDeviceType = () => {
+//   const userAgent = navigator.userAgent.toLowerCase();
+//   if (/mobile|android|iphone|ipad|phone/i.test(userAgent)) {
+//     return "mobile";
+//   } else if (/tablet|ipad/i.test(userAgent)) {
+//     return "tablet";
+//   } else {
+//     return "desktop";
+//   }
+// };
 
 export interface WikiArticle {
   title: string;
@@ -35,7 +35,7 @@ export function WikiCard({ article }: WikiCardProps) {
   const { currentLanguage } = useLocalization();
   const { toggleLike, isLiked } = useLikedArticles();
 
-  const isMobile = getDeviceType() === "mobile";
+  // const isMobile = getDeviceType() === "mobile";
 
   useEffect(() => {
     const fetchArticleContent = async () => {
@@ -108,12 +108,11 @@ export function WikiCard({ article }: WikiCardProps) {
       <div className="card-wrapper">
         <div className="card-thumb">
           {article.thumbnail ? (
-            <div className="card-image">
+            <div className="thumb-image">
               <img
                 loading="lazy"
                 src={article.thumbnail.source}
                 alt={article.title}
-                className={`wiki-card-image ${imageLoaded ? "loaded" : ""}`}
                 onLoad={() => setImageLoaded(true)}
                 onError={(e) => {
                   console.error("Image failed to load:", e);
@@ -133,13 +132,14 @@ export function WikiCard({ article }: WikiCardProps) {
               <label>
                 <h2 className="article-title">{article.title}</h2>
                 <div className="show-more" aria-label="Expand article">
-                  {isMobile && (
+                  {/* {isMobile && (
                     <ChevronDown className="expand-icon" size={24} />
-                  )}
+                  )} */}
                   <input
                     type="checkbox"
                     id="toggle"
-                    defaultChecked={!isMobile}
+                    // defaultChecked={!isMobile}
+                    checked
                   />
                 </div>
               </label>

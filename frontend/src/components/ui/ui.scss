@@ -2,14 +2,15 @@
 
 :root {
   --header-pad: clamp(12px, 2vw, 28px);
+  --nav-icon-size: clamp(18px, 4vw, 20px);
   color-scheme: dark dark;
 }
 
 .loader {
   display: flex;
   width: 100%;
-  min-height: clamp(100px, 100dvh, 100dvh);
-  place-content: center;
+  min-height: 100dvh;
+  justify-content: center;
   align-items: center;
 
   &.pending {
@@ -65,8 +66,8 @@
       @include Button();
 
       svg {
-        width: 20px;
-        height: 20px;
+        width: var(--nav-icon-size);
+        height: var(--nav-icon-size);
       }
     }
   }
@@ -135,16 +136,17 @@
   &-thumb {
     width: clamp(80px, 10vw, 100px);
     border: 4px solid rgb(var(--fg-color));
-    background-color: rgb(var(--bg-color));
+    background-color: rgb(var(--fg-color));
     aspect-ratio: 1;
     border-radius: 10px;
     overflow: hidden;
+    display: flex;
 
     img {
-      background-color: rgb(var(--text-color));
       width: 100%;
+      aspect-ratio: 1;
       object-fit: cover;
-      object-position: center;
+      object-position: top center;
     }
   }
 
@@ -221,11 +223,6 @@
   &-header {
     display: flex;
     gap: 8px;
-    // justify-content: space-between;
-
-    .show-more {
-      //   flex: 1;
-    }
 
     .button {
       align-self: center;
@@ -250,7 +247,7 @@
     height: 100%;
     width: 100%;
     img {
-      background-color: rgb(var(--text-color));
+      background-color: rgb(var(--fg-color));
       width: 100%;
       height: 100%;
       object-fit: cover;
