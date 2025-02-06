@@ -2,7 +2,6 @@ import { useEffect, useRef, useCallback, useState } from "react";
 // import { WikiCard } from "./components/WikiCard";
 import { useWikiArticles } from "./hooks/useWikiArticles";
 import { Analytics } from "@vercel/analytics/react";
-import { LanguageSelector } from "./components/LanguageSelector";
 import Loader from "./components/ui/loader";
 import "./components/ui/ui.scss";
 import { WikiCard } from "./components/ui/wikicard";
