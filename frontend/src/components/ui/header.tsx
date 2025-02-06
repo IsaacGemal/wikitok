@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Info } from "lucide-react";
 import { LanguageSelector } from "./language-selector";
+import LikesCard from "./likes-card";
 
 export default function Header() {
   const [showAbout, setShowAbout] = useState(false);
@@ -17,6 +18,7 @@ export default function Header() {
         <button onClick={() => setShowAbout(!showAbout)} className="button">
           <Info />
         </button>
+        <LikesCard />
         <LanguageSelector />
       </nav>
 

@@ -59,7 +59,7 @@
 
   nav {
     display: flex;
-    gap: 12px;
+    gap: clamp(6px, 2vw, 12px);
 
     .button {
       @include Button();
@@ -67,7 +67,6 @@
       svg {
         width: 20px;
         height: 20px;
-        border-radius: 50%;
       }
     }
   }
@@ -117,11 +116,7 @@
       top: 0;
       width: 100%;
       height: 100%;
-      background-image: linear-gradient(
-        to bottom,
-        #00000050 20%,
-        #000000af 80%
-      );
+      background-image: linear-gradient(to bottom, #00000010 70%, #000000af);
     }
   }
 
@@ -146,6 +141,7 @@
     overflow: hidden;
 
     img {
+      background-color: rgb(var(--text-color));
       width: 100%;
       object-fit: cover;
       object-position: center;
@@ -153,7 +149,7 @@
   }
 
   &-content {
-    background-color: rgb(var(--fg-color), 0.9);
+    background-color: rgb(var(--fg-color), 0.85);
     border-radius: 10px;
     border: 1px solid rgb(var(--text-color), 0.15);
     display: grid;
@@ -165,7 +161,7 @@
     &:has(input:checked) {
       p {
         height: fit-content;
-        margin: 8px 0;
+        margin: 6px 0;
       }
     }
 
@@ -179,11 +175,12 @@
       display: -webkit-box;
       overflow: hidden;
       color: rgba(var(--text-color), 0.9);
-      font-size: 15px;
+      font-size: clamp(14px, 2vw, 16px);
     }
 
     .read-more {
       justify-self: start;
+      font-size: clamp(14px, 2vw, 16px);
     }
   }
 
@@ -193,11 +190,11 @@
     label {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 4px;
     }
 
     h2 {
-      font-size: clamp(20px, 5vw, 28px);
+      font-size: clamp(18px, 5vw, 28px);
       font-weight: 600;
       text-align: left;
     }
@@ -223,7 +220,7 @@
 
   &-header {
     display: flex;
-    gap: 16px;
+    gap: 8px;
     // justify-content: space-between;
 
     .show-more {
@@ -233,7 +230,19 @@
     .button {
       align-self: center;
       @include Button();
-      height: 40px;
+      height: 36px;
+    }
+    .actions {
+      display: flex;
+      gap: 8px;
+
+      #liked {
+        background-color: rgb(var(--red));
+        svg {
+          fill: #ffffff;
+          transition: 0.2s;
+        }
+      }
     }
   }
 
@@ -241,6 +250,7 @@
     height: 100%;
     width: 100%;
     img {
+      background-color: rgb(var(--text-color));
       width: 100%;
       height: 100%;
       object-fit: cover;

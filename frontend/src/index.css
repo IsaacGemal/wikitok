@@ -4,6 +4,7 @@
   --bg-color: 0, 0, 0;
   --fg-color: 28, 30, 33;
   --text-color: 246, 246, 246;
+  --red: 255, 69, 58;
   interpolate-size: allow-keywords;
 }
 

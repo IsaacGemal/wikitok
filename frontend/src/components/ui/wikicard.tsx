@@ -1,17 +1,30 @@
-import { ChevronDown, Share2 } from "lucide-react";
+import { ChevronDown, Heart, Share2 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { useLocalization } from "../../hooks/useLocalization";
+import { useLikedArticles } from "../../contexts/LikedArticlesContext";
 
-interface WikiArticle {
+const getDeviceType = () => {
+  const userAgent = navigator.userAgent.toLowerCase();
+  if (/mobile|android|iphone|ipad|phone/i.test(userAgent)) {
+    return "mobile";
+  } else if (/tablet|ipad/i.test(userAgent)) {
+    return "tablet";
+  } else {
+    return "desktop";
+  }
+};
+
+export interface WikiArticle {
   title: string;
+  extract: string;
   pageid: number;
-  thumbnail?: {
+  url: string;
+  thumbnail: {
     source: string;
     width: number;
     height: number;
   };
 }
-
 interface WikiCardProps {
   article: WikiArticle;
 }
@@ -20,6 +33,9 @@ export function WikiCard({ article }: WikiCardProps) {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [articleContent, setArticleContent] = useState<string | null>(null);
   const { currentLanguage } = useLocalization();
+  const { toggleLike, isLiked } = useLikedArticles();
+
+  const isMobile = getDeviceType() === "mobile";
 
   useEffect(() => {
     const fetchArticleContent = async () => {
@@ -41,7 +57,7 @@ export function WikiCard({ article }: WikiCardProps) {
     };
 
     fetchArticleContent();
-  }, [article.pageid]);
+  }, [article.pageid, currentLanguage.api]);
 
   // Add debugging log
   console.log("Article data:", {
@@ -117,18 +133,32 @@ export function WikiCard({ article }: WikiCardProps) {
               <label>
                 <h2 className="article-title">{article.title}</h2>
                 <div className="show-more" aria-label="Expand article">
-                  <ChevronDown className="share-icon" size={26} />
-                  <input type="checkbox" id="toggle" />
+                  <ChevronDown className="expand-icon" size={24} />
+                  <input
+                    type="checkbox"
+                    id="toggle"
+                    defaultChecked={!isMobile}
+                  />
                 </div>
               </label>
             </button>
-            <button
-              onClick={handleShare}
-              className="button"
-              aria-label="Share article"
-            >
-              <Share2 className="share-icon" size={18} />
-            </button>
+            <div className="actions">
+              <button
+                onClick={() => toggleLike(article)}
+                className="button"
+                id={isLiked(article.pageid) ? "liked" : ""}
+                aria-label="Share article"
+              >
+                <Heart className="share-icon" size={18} />
+              </button>
+              <button
+                onClick={handleShare}
+                className="button"
+                aria-label="Share article"
+              >
+                <Share2 className="share-icon" size={18} />
+              </button>
+            </div>
           </div>
           {articleContent ? (
             <p className="card-content-text">{articleContent}</p>

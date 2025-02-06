@@ -26,7 +26,7 @@ function App() {
     const observer = new IntersectionObserver(handleObserver, {
       threshold: 0,
       root: rootRef.current,
-      rootMargin: "500%",
+      rootMargin: "200%",
     });
 
     if (observerTarget.current) {
