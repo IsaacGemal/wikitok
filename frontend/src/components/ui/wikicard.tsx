@@ -133,7 +133,9 @@ export function WikiCard({ article }: WikiCardProps) {
               <label>
                 <h2 className="article-title">{article.title}</h2>
                 <div className="show-more" aria-label="Expand article">
-                  <ChevronDown className="expand-icon" size={24} />
+                  {isMobile && (
+                    <ChevronDown className="expand-icon" size={24} />
+                  )}
                   <input
                     type="checkbox"
                     id="toggle"
