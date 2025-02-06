@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useRef, useCallback } from "react";
 // import { WikiCard } from "./components/WikiCard";
 import { useWikiArticles } from "./hooks/useWikiArticles";
 import { Analytics } from "@vercel/analytics/react";
