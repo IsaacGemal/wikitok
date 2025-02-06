@@ -5,6 +5,10 @@ html, body {
   overflow: hidden;
 }
 
-::-webkit-scrollbar {
+.hide-scroll::-webkit-scrollbar {
   display: none;
+}
+.hide-scroll {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

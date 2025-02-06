@@ -66,7 +66,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory hide-scroll">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
