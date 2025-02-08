@@ -1,5 +1,5 @@
 import { useState, useCallback } from "react";
-import { useLocalization } from "./useLocalization";
+import { useWikiSelection } from "./useWikiSelection";
 import type { WikiArticle } from "../components/WikiCard";
 
 const preloadImage = (src: string): Promise<void> => {
@@ -15,14 +15,15 @@ export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
-  const {currentLanguage} = useLocalization()
+  const { selectedWiki } = useWikiSelection();
 
   const fetchArticles = async (forBuffer = false) => {
     if (loading) return;
     setLoading(true);
     try {
       const response = await fetch(
-        currentLanguage.api +
+        selectedWiki.apiEndpoint +
+          "?" +
           new URLSearchParams({
             action: "query",
             format: "json",
@@ -38,6 +39,7 @@ export function useWikiArticles() {
             piprop: "thumbnail",
             pithumbsize: "400",
             origin: "*",
+            ...selectedWiki.apiParams,
           })
       );
 
@@ -48,7 +50,7 @@ export function useWikiArticles() {
           extract: page.extract,
           pageid: page.pageid,
           thumbnail: page.thumbnail,
-          url: page.canonicalurl,
+          url: page.canonicalurl || `${selectedWiki.baseUrl}/wiki/${encodeURIComponent(page.title)}`,
         }))
         .filter((article) => article.thumbnail
                              && article.thumbnail.source
