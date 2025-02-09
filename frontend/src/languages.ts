@@ -139,4 +139,11 @@ export const LANGUAGES = [
     api: "https://nl.wikipedia.org/w/api.php?",
     article: "https://nl.wikipedia.org/wiki/",
   },
+  {
+    id: "ur",
+    name: "Pakistan",
+    flag: "https://hatscripts.github.io/circle-flags/flags/pk.svg",
+    api: "https://ur.wikipedia.org/w/api.php?",
+    article: "https://ur.wikipedia.org/wiki/",
+  }
 ];
