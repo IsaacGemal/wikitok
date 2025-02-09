@@ -36,6 +36,7 @@
   background-color: rgb(var(--fg-color));
   backdrop-filter: blur(10px);
   border: 1px solid rgb(var(--text-color), 0.15);
+  cursor: pointer;
 }
 
 .header {

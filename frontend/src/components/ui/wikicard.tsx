@@ -168,7 +168,7 @@ export function WikiCard({ article }: WikiCardProps) {
             <i className="loading-text">Loading description...</i>
           )}
           <a
-            href={`${currentLanguage.article}${article.pageid}`}
+            href={article.url}
             target="_blank"
             rel="noopener noreferrer"
             className="read-more"
