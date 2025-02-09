@@ -40,7 +40,9 @@ No backend required!
 
 ## Demo
 
-Check it out here at [wikitok.vercel.app](https://wikitok.vercel.app)
+Check it out here at [wikitok.vercel.app](https://wikitok.vercel.app) or [wikitok.io](https://www.wikitok.io)
+
+**Note:** This is the original WikiTok web project, not affiliated with wikitok.net or the independently developed WikiTok iPhone app.
 
 ## Contributing
 
