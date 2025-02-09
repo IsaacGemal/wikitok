@@ -1,10 +1,14 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Info } from "lucide-react";
 import { LanguageSelector } from "./language-selector";
 import LikesCard from "./likes-card";
+import useHandleOutsideClick from "../../hooks/useHandleOutsideClick";
 
 export default function Header() {
   const [showAbout, setShowAbout] = useState(false);
+  const aboutRef = useRef<HTMLDivElement>(null);
+
+  useHandleOutsideClick(aboutRef, () => setShowAbout(false));
 
   return (
     <header className="header">
@@ -24,7 +28,10 @@ export default function Header() {
 
       {showAbout && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-gray-900 p-6 rounded-lg max-w-md relative">
+          <div
+            className="bg-gray-900 p-6 rounded-lg max-w-md relative"
+            ref={aboutRef}
+          >
             <button
               onClick={() => setShowAbout(false)}
               className="absolute top-2 right-2 text-white/70 hover:text-white"

@@ -1,37 +1,15 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useRef } from "react";
 import { Globe } from "lucide-react";
 import { useLocalization } from "../../hooks/useLocalization";
 import { LANGUAGES } from "../../languages";
+import useHandleOutsideClick from "../../hooks/useHandleOutsideClick";
 
 export function LanguageSelector() {
   const [showDropdown, setShowDropdown] = useState(false);
   const { setLanguage } = useLocalization();
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setShowDropdown(false);
-    }
-  };
-
-  useEffect(() => {
-    const handleEscKey = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setShowDropdown(false);
-      }
-    };
-
-    document.addEventListener("mousedown", handleClickOutside);
-    document.addEventListener("keydown", handleEscKey);
-    
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-      document.removeEventListener("keydown", handleEscKey);
-    };
-  }, []);
+  useHandleOutsideClick(dropdownRef, () => setShowDropdown(false));
 
   return (
     <div

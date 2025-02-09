@@ -19,7 +19,7 @@ function App() {
         fetchArticles();
       }
     },
-    [loading, fetchArticles]
+    [loading, fetchArticles, articles.length]
   );
 
   useEffect(() => {

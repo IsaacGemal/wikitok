@@ -1,6 +1,7 @@
 import { Download, FolderHeart, Search, X } from "lucide-react";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useLikedArticles } from "../../contexts/LikedArticlesContext";
+import useHandleOutsideClick from "../../hooks/useHandleOutsideClick";
 
 interface LikesModalProps {
   close: () => void;
@@ -22,6 +23,7 @@ export default function LikesCard() {
 const LikesModal = ({ close }: LikesModalProps) => {
   const [searchQuery, setSearchQuery] = useState("");
   const { likedArticles, toggleLike } = useLikedArticles();
+  const likesContainerRef = useRef<HTMLDivElement>(null);
 
   const filteredLikedArticles = likedArticles.filter(
     (article) =>
@@ -51,9 +53,14 @@ const LikesModal = ({ close }: LikesModalProps) => {
     linkElement.click();
   };
 
+  useHandleOutsideClick(likesContainerRef, close);
+
   return (
     <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-      <div className="bg-gray-900 p-6 rounded-lg w-full max-w-2xl h-[80vh] flex flex-col relative">
+      <div
+        className="bg-gray-900 p-6 rounded-lg w-full max-w-2xl h-[80vh] flex flex-col relative"
+        ref={likesContainerRef}
+      >
         <button
           onClick={() => close()}
           className="absolute top-2 right-2 text-white/70 hover:text-white"
