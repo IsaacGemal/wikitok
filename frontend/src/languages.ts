@@ -35,6 +35,13 @@ export const LANGUAGES = [
     article: "https://it.wikipedia.org/wiki/",
   },
   {
+    id: "uk",
+    name: "Українська",
+    flag: "https://hatscripts.github.io/circle-flags/flags/ua.svg",
+    api: "https://uk.wikipedia.org/w/api.php?",
+    article: "https://uk.wikipedia.org/wiki/",
+  },
+  {
     id: "pt",
     name: "Português",
     flag: "https://hatscripts.github.io/circle-flags/flags/br.svg",
