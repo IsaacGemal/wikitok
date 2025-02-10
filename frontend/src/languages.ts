@@ -163,6 +163,7 @@ export const LANGUAGES = [
   {
     id: "te",
     name: "Telugu",
+    flag: "https://hatscripts.github.io/circle-flags/flags/in-tg",
     api: "https://te.wikipedia.org/w/api.php?",
     article: "https://te.wikipedia.org/wiki/",
   }
