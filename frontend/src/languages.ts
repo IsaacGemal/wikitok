@@ -159,5 +159,12 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/hr.svg",
     api: "https://hr.wikipedia.org/w/api.php?",
     article: "https://hr.wikipedia.org/wiki/",
+  },
+  {
+    id: "fi",
+    name: "Suomi",
+    flag: "https://hatscripts.github.io/circle-flags/flags/fi.svg",
+    api: "https://fi.wikipedia.org/w/api.php?",
+    article: "https://fi.wikipedia.org/wiki/",
   }
 ];
