@@ -27,6 +27,13 @@ export const LANGUAGES = [
     api: "https://es.wikipedia.org/w/api.php?",
     article: "https://es.wikipedia.org/wiki/",
   },
+    {
+    id: "eo",
+    name: "Esperanto",
+    flag: "https://upload.wikimedia.org/wikipedia/commons/2/20/Verda_stelo_%28unukolora%29.svg",
+    api: "https://eo.wikipedia.org/w/api.php?",
+    article: "https://eo.wikipedia.org/wiki/",
+  },
   {
     id: "it",
     name: "Italiano",
