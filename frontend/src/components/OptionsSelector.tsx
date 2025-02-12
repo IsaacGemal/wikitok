@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useWikiOptions } from "../hooks/useWikiOptions";
 import { LANGUAGES } from "../languages";
-import { CATEGORIES, Category } from "../categories";
+import { CATEGORIES } from "../categories";
 import { X, Settings, Save, Check, ChevronDown, ChevronRight } from "lucide-react";
 
 export function OptionsSelector() {
@@ -14,6 +14,34 @@ export function OptionsSelector() {
   // Track pending changes
   const [pendingLanguage, setPendingLanguage] = useState(currentLanguage.id);
   const [pendingCategories, setPendingCategories] = useState<string[]>(selectedCategories);
+
+  // Translations for "Random"
+  const randomTranslations: Record<string, string> = {
+    en: "Random",
+    de: "Zufällig",
+    fr: "Aléatoire",
+    es: "Aleatorio",
+    it: "Casuale",
+    pt: "Aleatório",
+    ru: "Случайно",
+    zh: "随机",
+    ja: "ランダム",
+    ar: "عشوائي",
+    fa: "تصادفی",
+    he: "אקראי",
+    hi: "यादृच्छिक",
+    tr: "Rastgele",
+    id: "Acak",
+    nl: "Willekeurig",
+    cs: "Náhodně",
+    sk: "Náhodne",
+    pl: "Losowo",
+    eu: "Ausaz",
+    hr: "Nasumično",
+    sv: "Slumpmässig",
+    uk: "Випадково",
+    ur: "تصادفی"
+  };
 
   const handleCategoryClick = (categoryId: string, translation: string) => {
     const category = CATEGORIES.find(c => c.id === categoryId);
@@ -113,12 +141,6 @@ export function OptionsSelector() {
     };
   }, [isModalOpen]);
 
-  const getCurrentCategoryName = () => {
-    if (selectedCategories.length === 0) return "All Categories";
-    const category = CATEGORIES.find((cat: Category) => cat.translations[currentLanguage.id] === selectedCategories[0]);
-    return category ? `${category.icon} ${category.translations[currentLanguage.id]}` : selectedCategories[0];
-  };
-
   return (
     <>
       <button
@@ -202,7 +224,7 @@ export function OptionsSelector() {
                     }`}
                   >
                     <span className="text-xl">🎲</span>
-                    <span className="font-medium">Random</span>
+                    <span className="font-medium">{randomTranslations[pendingLanguage] || "Random"}</span>
                   </button>
                   {CATEGORIES.map((category) => {
                     const translation = category.translations[pendingLanguage];

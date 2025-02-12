@@ -1,12 +1,4 @@
-export interface Language {
-  id: string;
-  name: string;
-  flag: string;
-  api: string;
-  article: string;
-}
-
-export const LANGUAGES: Language[] = [
+export const LANGUAGES = [
   {
     id: "en",
     name: "English",
@@ -41,6 +33,13 @@ export const LANGUAGES: Language[] = [
     flag: "https://hatscripts.github.io/circle-flags/flags/it.svg",
     api: "https://it.wikipedia.org/w/api.php?",
     article: "https://it.wikipedia.org/wiki/",
+  },
+  {
+    id: "uk",
+    name: "Українська",
+    flag: "https://hatscripts.github.io/circle-flags/flags/ua.svg",
+    api: "https://uk.wikipedia.org/w/api.php?",
+    article: "https://uk.wikipedia.org/wiki/",
   },
   {
     id: "pt",
@@ -149,9 +148,23 @@ export const LANGUAGES: Language[] = [
   },
   {
     id: "ur",
-    name: "اردو",
+    name: "Pakistan",
     flag: "https://hatscripts.github.io/circle-flags/flags/pk.svg",
     api: "https://ur.wikipedia.org/w/api.php?",
     article: "https://ur.wikipedia.org/wiki/",
+  },
+  {
+    id: "hr",
+    name: "Hrvatski",
+    flag: "https://hatscripts.github.io/circle-flags/flags/hr.svg",
+    api: "https://hr.wikipedia.org/w/api.php?",
+    article: "https://hr.wikipedia.org/wiki/",
+  },
+  {
+    id: "sv",
+    name: "Svenska",
+    flag: "https://hatscripts.github.io/circle-flags/flags/se.svg",
+    api: "https://sv.wikipedia.org/w/api.php?",
+    article: "https://sv.wikipedia.org/wiki/",
   }
 ];

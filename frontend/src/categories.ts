@@ -32,7 +32,9 @@ export const CATEGORIES: Category[] = [
       cs: "Umění",
       sk: "Umenie",
       pl: "Sztuka",
-      eu: "Artea"
+      eu: "Artea",
+      hr: "Umjetnost",
+      sv: "Konst",
     },
     icon: "🎨",
     subcategories: {
@@ -175,6 +177,19 @@ export const CATEGORIES: Category[] = [
         "Literatura",
         "Musika",
         "Arkitektura"
+      ],
+      hr: [
+        "Umjetnost",
+        "Scena umjetnosti",
+        "Književnost",
+        "Muzika",
+      ],
+      sv: [
+        "Konst",
+        "Scenkonst",
+        "Litteratur",
+        "Musik",
+        "Arkitektur"
       ]
     }
   },
@@ -201,7 +216,9 @@ export const CATEGORIES: Category[] = [
       cs: "Věda",
       sk: "Veda",
       pl: "Nauka",
-      eu: "Zientzia"
+      eu: "Zientzia",
+      hr: "Znanost",
+      sv: "Vetenskap",
     },
     icon: "🔬",
     subcategories: {
@@ -344,6 +361,20 @@ export const CATEGORIES: Category[] = [
         "Biologia",
         "Astronomia",
         "Matematika"
+      ],
+      hr: [
+        "Fizika",
+        "Kemija",
+        "Biologija",
+        "Astronomija",
+        "Matematika"
+      ],
+      sv: [
+        "Fysik",
+        "Kemi",
+        "Biologi",
+        "Astronomi",
+        "Matematik"
       ]
     }
   },
@@ -370,7 +401,9 @@ export const CATEGORIES: Category[] = [
       cs: "Technologie",
       sk: "Technológia",
       pl: "Technologia",
-      eu: "Teknologia"
+      eu: "Teknologia",
+      hr: "Tehnologija",
+      sv: "Teknik"
     },
     icon: "💻",
     subcategories: {
@@ -513,6 +546,20 @@ export const CATEGORIES: Category[] = [
         "Adimen artifiziala",
         "Robotika",
         "Elektronika"
+      ],
+      hr: [
+        "Informatika",
+        "Internet",
+        "Umjetna inteligencija",
+        "Robotika",
+        "Elektronika"
+      ],
+      sv: [
+        "Informatik",
+        "Internet",
+        "Artificiell intelligens",
+        "Robotik",
+        "Elektronik"
       ]
     }
   },
@@ -539,7 +586,9 @@ export const CATEGORIES: Category[] = [
       cs: "Dějiny",
       sk: "Dejiny",
       pl: "Historia",
-      eu: "Historia"
+      eu: "Historia",
+      hr: "Povijest",
+      sv: "Historia"
     },
     icon: "📚",
     subcategories: {
@@ -682,6 +731,19 @@ export const CATEGORIES: Category[] = [
         "Historia modernoa",
         "Historia militarra",
         "Kultura historia"
+      ],
+      hr: [
+        "Povijest",
+        "Povijest umjetnosti",
+        "Povijest znanosti",
+        "Povijest vojne",
+        "Povijest kulture"
+      ],
+      sv: [
+        "Historia",
+        "Konsthistoria",
+        "Vetenskapshistoria",
+        "Krigshistoria",
       ]
     }
   },
@@ -708,7 +770,9 @@ export const CATEGORIES: Category[] = [
       cs: "Geografie",
       sk: "Geografia",
       pl: "Geografia",
-      eu: "Geografia"
+      eu: "Geografia",
+      hr: "Geografija",
+      sv: "Geografi"
     },
     icon: "🌍",
     subcategories: {
@@ -851,6 +915,20 @@ export const CATEGORIES: Category[] = [
         "Klima",
         "Kartografia",
         "Geologia"
+      ],
+      hr: [
+        "Geografija",
+        "Geografija fizike",
+        "Klimatologija",
+        "Kartografija",
+        "Geologija"
+      ],
+      sv: [
+        "Geografi",
+        "Fysisk geografi",
+        "Klimatologi",
+        "Kartografi",
+        "Geologi"
       ]
     }
   },
@@ -877,7 +955,9 @@ export const CATEGORIES: Category[] = [
       cs: "Kultura",
       sk: "Kultúra",
       pl: "Kultura",
-      eu: "Kultura"
+      eu: "Kultura",
+      hr: "Kultura",
+      sv: "Kultur"
     },
     icon: "🎭",
     subcategories: {
@@ -900,7 +980,9 @@ export const CATEGORIES: Category[] = [
       cs: ["Tradice", "Zvyky", "Festivaly", "Gastronomie", "Móda"],
       sk: ["Tradície", "Zvyky", "Festivaly", "Gastronómia", "Móda"],
       pl: ["Tradycje", "Zwyczaje", "Festiwale", "Gastronomia", "Moda"],
-      eu: ["Tradizioak", "Ohiturak", "Jaialdiak", "Gastronomia", "Moda"]
+      eu: ["Tradizioak", "Ohiturak", "Jaialdiak", "Gastronomia", "Moda"],
+      hr: ["Tradicije", "Običaji", "Festivali", "Gastronomija", "Moda"],
+      sv: ["Traditioner", "Bruk", "Festival", "Gastronomi", "Mode"]
     }
   },
   {
@@ -926,7 +1008,9 @@ export const CATEGORIES: Category[] = [
       cs: "Sport",
       sk: "Šport",
       pl: "Sport",
-      eu: "Kirola"
+      eu: "Kirola",
+      hr: "Šport",
+      sv: "Sport"
     },
     icon: "⚽",
     subcategories: {
@@ -975,7 +1059,9 @@ export const CATEGORIES: Category[] = [
       cs: "Příroda",
       sk: "Príroda",
       pl: "Przyroda",
-      eu: "Natura"
+      eu: "Natura",
+      hr: "Priroda",
+      sv: "Natur"
     },
     icon: "🌿",
     subcategories: {
@@ -1024,7 +1110,9 @@ export const CATEGORIES: Category[] = [
       cs: "Ekonomie",
       sk: "Ekonómia",
       pl: "Ekonomia",
-      eu: "Ekonomia"
+      eu: "Ekonomia",
+      hr: "Ekonomija",
+      sv: "Ekonomi"
     },
     icon: "💰",
     subcategories: {
@@ -1047,7 +1135,9 @@ export const CATEGORIES: Category[] = [
       cs: ["Makroekonomie", "Mikroekonomie", "Mezinárodní obchod", "Finance", "Podnikání"],
       sk: ["Makroekonómia", "Mikroekonómia", "Medzinárodný obchod", "Financie", "Podnikanie"],
       pl: ["Makroekonomia", "Mikroekonomia", "Handel międzynarodowy", "Finanse", "Biznes"],
-      eu: ["Makroekonomia", "Mikroekonomia", "Nazioarteko merkataritza", "Finantzak", "Negozioak"]
+      eu: ["Makroekonomia", "Mikroekonomia", "Nazioarteko merkataritza", "Finantzak", "Negozioak"],
+      hr: ["Makroekonomija", "Mikroekonomija", "Međunarodna trgovina", "Finansije", "Poslovanje"],
+      sv: ["Makroekonomi", "Mikroekonomi", "Internationell handel", "Finans", "Företag"]
     }
   },
   {
@@ -1073,7 +1163,9 @@ export const CATEGORIES: Category[] = [
       cs: "Politika",
       sk: "Politika",
       pl: "Polityka",
-      eu: "Politika"
+      eu: "Politika",
+      hr: "Politika",
+      sv: "Politik"
     },
     icon: "🏛️",
     subcategories: {
@@ -1122,7 +1214,9 @@ export const CATEGORIES: Category[] = [
       cs: "Filozofie",
       sk: "Filozofia",
       pl: "Filozofia",
-      eu: "Filosofia"
+      eu: "Filosofia",
+      hr: "Filozofija",
+      sv: "Filosofi"
     },
     icon: "🤔",
     subcategories: {
@@ -1171,7 +1265,9 @@ export const CATEGORIES: Category[] = [
       cs: "Náboženství",
       sk: "Náboženstvo",
       pl: "Religia",
-      eu: "Erlijioa"
+      eu: "Erlijioa",
+      hr: "Nauka",
+      sv: "Religiös"
     },
     icon: "🕊️",
     subcategories: {
@@ -1314,6 +1410,20 @@ export const CATEGORIES: Category[] = [
         "Testu sakratuak",
         "Espiritualtasuna",
         "Erlijioaren historia"
+      ],
+      hr: [
+        "Svjetske religije",
+        "Religijska praksa",
+        "Sveti tekstovi",
+        "Duševnost",
+        "Religijska povijest"
+      ],
+      sv: [
+        "Världsreligior",
+        "Religiösa praktiker",
+        "Heliga texter",
+        "Spiritualitet",
+        "Religiös historia"
       ]
     }
   },
@@ -1340,7 +1450,9 @@ export const CATEGORIES: Category[] = [
       cs: "Vzdělávání",
       sk: "Vzdelávanie",
       pl: "Edukacja",
-      eu: "Hezkuntza"
+      eu: "Hezkuntza",
+      hr: "Obrazovanje",
+      sv: "Utbildning"
     },
     icon: "📚",
     subcategories: {
@@ -1483,6 +1595,20 @@ export const CATEGORIES: Category[] = [
         "Diziplina akademikoak",
         "Ikaskuntza teoria",
         "Hezkuntza teknologia"
+      ],
+      hr: [
+        "Metode načina",
+        "Sistemi obrazovanja",
+        "Akademske discipline",
+        "Teorija obrazovanja",
+        "Hezkuntza teknologia"
+      ],
+      sv: [
+        "Utbildningsmetoder",
+        "Utbildningssystem",
+        "Akademiska discipliner",
+        "Utbildningshistoria",
+        "Utbildningslära"
       ]
     }
   }

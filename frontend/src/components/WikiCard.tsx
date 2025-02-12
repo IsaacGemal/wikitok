@@ -1,5 +1,6 @@
-import { Share2 } from 'lucide-react';
+import { Share2, Heart } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import { useLikedArticles } from '../contexts/LikedArticlesContext';
 
 export interface WikiArticle {
     title: string;
@@ -22,6 +23,7 @@ export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const [imageError, setImageError] = useState(false);
     const [imageUrl, setImageUrl] = useState<string | null>(null);
+    const { toggleLike, isLiked } = useLikedArticles();
 
     useEffect(() => {
         if (article.thumbnail?.source) {
@@ -146,13 +148,13 @@ export function WikiCard({ article }: WikiCardProps) {
                         {(!imageLoaded || imageError) && (
                             <div className="absolute inset-0 bg-gray-900 animate-pulse" />
                         )}
-                        <div className="absolute inset-0 bg-gradient-to-b from-black/40 to-black/80" />
+                        <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/60" />
                     </div>
                 ) : (
                     <div className="absolute inset-0 bg-gray-900" />
                 )}
                 {/* Content container with z-index to ensure it's above the image */}
-                <div className="absolute bottom-[10vh] left-0 right-0 p-6 text-white z-10">
+                <div className="absolute backdrop-blur-xs bg-black/30 bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
                         <a
                             href={article.url}
@@ -162,13 +164,27 @@ export function WikiCard({ article }: WikiCardProps) {
                         >
                             <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
                         </a>
-                        <button
-                            onClick={handleShare}
-                            className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
-                            aria-label="Share article"
-                        >
-                            <Share2 className="w-5 h-5" />
-                        </button>
+                        <div className="flex gap-2">
+                            <button
+                                onClick={() => toggleLike(article)}
+                                className={`p-2 rounded-full backdrop-blur-sm transition-colors ${isLiked(article.pageid)
+                                    ? 'bg-red-500 hover:bg-red-600'
+                                    : 'bg-white/10 hover:bg-white/20'
+                                    }`}
+                                aria-label="Like article"
+                            >
+                                <Heart
+                                    className={`w-5 h-5 ${isLiked(article.pageid) ? 'fill-white' : ''}`}
+                                />
+                            </button>
+                            <button
+                                onClick={handleShare}
+                                className="p-2 rounded-full bg-white/10 backdrop-blur-sm hover:bg-white/20 transition-colors"
+                                aria-label="Share article"
+                            >
+                                <Share2 className="w-5 h-5" />
+                            </button>
+                        </div>
                     </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
                     <a

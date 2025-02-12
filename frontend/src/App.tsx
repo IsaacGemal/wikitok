@@ -59,9 +59,8 @@ function App() {
     const dataUri =
       "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = `wikitok-favorites-${
-      new Date().toISOString().split("T")[0]
-    }.json`;
+    const exportFileDefaultName = `wikitok-favorites-${new Date().toISOString().split("T")[0]
+      }.json`;
 
     const linkElement = document.createElement("a");
     linkElement.setAttribute("href", dataUri);
@@ -70,7 +69,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory">
+    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory hide-scroll">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
@@ -131,11 +130,22 @@ function App() {
                 GitHub
               </a>
             </p>
+            <p className="text-white/70 mt-2">
+              If you enjoy this project, you can{" "}
+              <a
+                href="https://buymeacoffee.com/aizk"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white hover:underline"
+              >
+                buy me a coffee
+              </a>
+              ! ☕
+            </p>
           </div>
           <div
-            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${
-              showAbout ? "block" : "hidden"
-            }`}
+            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${showAbout ? "block" : "hidden"
+              }`}
             onClick={() => setShowAbout(false)}
           ></div>
         </div>
@@ -224,9 +234,8 @@ function App() {
             </div>
           </div>
           <div
-            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${
-              showLikes ? "block" : "hidden"
-            }`}
+            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${showLikes ? "block" : "hidden"
+              }`}
             onClick={() => setShowLikes(false)}
           ></div>
         </div>

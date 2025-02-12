@@ -2,11 +2,15 @@ import { useState, useEffect, useCallback, useRef } from "react";
 import { LANGUAGES } from "../languages";
 import type { WikiArticle } from "../components/WikiCard";
 
-interface Category {
-  id: string;
-  name: string;
-  size?: number;
-}
+// Fisher-Yates shuffle algorithm for better randomization
+const shuffleArray = <T>(array: T[]): T[] => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
 
 const preloadImage = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
@@ -48,11 +52,7 @@ export function useWikiOptions() {
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
 
-  // Add state for main categories
-  const [mainCategories, setMainCategories] = useState<Category[]>([]);
-
   // Add state to track current subcategories
-  const [currentSubcategories, setCurrentSubcategories] = useState<string[]>([]);
   const [usedPageIds, setUsedPageIds] = useState<Set<number>>(new Set());
 
   // Save language preference
@@ -61,7 +61,7 @@ export function useWikiOptions() {
     // Clear articles when language changes
     setArticles([]);
     setBuffer([]);
-    fetchArticles(false);
+    fetchArticles();
   }, [currentLanguage]);
 
   // Save category preference
@@ -70,43 +70,8 @@ export function useWikiOptions() {
     // Clear articles when categories change
     setArticles([]);
     setBuffer([]);
-    fetchArticles(false);
+    fetchArticles();
   }, [selectedCategories]);
-
-  // Fetch main categories when language changes
-  const fetchMainCategories = useCallback(async () => {
-    try {
-      const baseUrl = getBaseApiUrl(currentLanguage);
-      const params = new URLSearchParams({
-        action: "query",
-        format: "json",
-        list: "allcategories",
-        acmin: "1000", // Categories with at least 1000 members
-        aclimit: "20", // Get 20 main categories
-        acprop: "size|hidden",
-        origin: "*"
-      });
-
-      const requestUrl = `${baseUrl}?${params.toString()}`;
-      const response = await fetch(requestUrl);
-      const data = await response.json();
-
-      if (data.query?.allcategories) {
-        const categories = data.query.allcategories.map((cat: any) => ({
-          id: cat['*'],
-          name: cat['*'],
-          size: cat.size
-        }));
-        setMainCategories(categories);
-      }
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    }
-  }, [currentLanguage]);
-
-  useEffect(() => {
-    fetchMainCategories();
-  }, [currentLanguage, fetchMainCategories]);
 
   const setLanguage = useCallback((languageId: string) => {
     const newLanguage = LANGUAGES.find((lang) => lang.id === languageId);
@@ -117,19 +82,18 @@ export function useWikiOptions() {
     }
   }, []);
 
-  const getRandomSubcategories = async (categoryName: string, baseUrl: string, count: number = 3) => {
+  const getRandomSubcategories = async (categoryName: string, baseUrl: string, count: number = 2) => {
     const subcatParams = new URLSearchParams({
       action: "query",
       format: "json",
       list: "categorymembers",
       cmtitle: `Category:${categoryName}`,
       cmtype: "subcat",
-      cmlimit: "500",
+      cmlimit: "20", // Reduced from 500 to 20
       origin: "*"
     });
 
     const subcatUrl = `${baseUrl}?${subcatParams.toString()}`;
-    console.log('Fetching subcategories from:', subcatUrl);
     
     const subcatResponse = await fetch(subcatUrl);
     const subcatData = await subcatResponse.json();
@@ -139,21 +103,18 @@ export function useWikiOptions() {
     }
 
     // Filter out empty or meta categories
-    const validCategories = subcatData.query.categorymembers.filter((cat: { title: string }) => 
-      !cat.title.toLowerCase().includes('stub') && 
-      !cat.title.toLowerCase().includes('template') &&
-      !cat.title.toLowerCase().includes('list') &&
-      !cat.title.toLowerCase().includes('index')
-    );
+    const validCategories = subcatData.query.categorymembers
+      .filter((cat: { title: string }) => 
+        !cat.title.toLowerCase().includes('stub') && 
+        !cat.title.toLowerCase().includes('template') &&
+        !cat.title.toLowerCase().includes('list') &&
+        !cat.title.toLowerCase().includes('index')
+      ) as Array<{ title: string }>;
 
-    // Shuffle and get random subcategories
-    const shuffled = [...validCategories]
-      .sort(() => Math.random() - 0.5)
+    // Take fewer random subcategories
+    return shuffleArray(validCategories)
       .slice(0, count)
       .map(cat => cat.title);
-
-    console.log('Selected subcategories:', shuffled);
-    return shuffled;
   };
 
   const fetchPagesFromCategories = async (categories: string[], baseUrl: string) => {
@@ -218,95 +179,76 @@ export function useWikiOptions() {
       .sort(() => Math.random() - 0.5);
   };
 
-  const fetchArticles = async (forBuffer = false) => {
+  const fetchArticles = useCallback(async () => {
+    // If we have buffered articles, use them first
+    if (buffer.length > 0) {
+      setArticles(prev => [...prev, ...buffer]);
+      setBuffer([]);
+      return;
+    }
+
     if (loading) return;
     setLoading(true);
+
     try {
       const baseUrl = getBaseApiUrl(currentLanguage);
+      let newArticles: WikiArticle[] = [];
 
       if (selectedCategoriesRef.current.length > 0) {
-        let allPageIds: number[] = [];
-        
-        // Fetch pages from each selected category
+        // Fetch from categories with smaller batch sizes
+        const allPageIds: number[] = [];
+        const maxArticlesPerCategory = 10; // Reduced from 50 to 10
+
         for (const categoryName of selectedCategoriesRef.current) {
-          const targetCategories = await getRandomSubcategories(categoryName, baseUrl);
+          const targetCategories = await getRandomSubcategories(categoryName, baseUrl, 2); // Get fewer subcategories
           const pageIds = await fetchPagesFromCategories(targetCategories, baseUrl);
-          
-          if (pageIds.length > 0) {
-            allPageIds = [...allPageIds, ...pageIds];
-          } else {
-            // Fallback to search if no pages found
-            const params = new URLSearchParams({
-              action: "query",
-              format: "json",
-              list: "search",
-              srsearch: categoryName,
-              srnamespace: "0",
-              srlimit: "10",
-              origin: "*"
-            });
-            
-            const searchUrl = `${baseUrl}?${params.toString()}`;
-            const searchResponse = await fetch(searchUrl);
-            const searchData = await searchResponse.json();
-            
-            if (searchData.query?.search) {
-              const searchPageIds = searchData.query.search
-                .map((result: any) => result.pageid)
-                .filter((id: number) => !usedPageIds.has(id));
-              allPageIds = [...allPageIds, ...searchPageIds];
-            }
-          }
+          // Take only a few from each category
+          const categoryPageIds = shuffleArray(pageIds).slice(0, maxArticlesPerCategory);
+          allPageIds.push(...categoryPageIds);
         }
 
-        // Shuffle all collected page IDs
-        allPageIds = allPageIds.sort(() => Math.random() - 0.5);
-        
-        // Take a subset and fetch content
-        const pageIdsToFetch = allPageIds.slice(0, 20);
-        await fetchContentForPages(pageIdsToFetch, baseUrl, forBuffer);
+        // Combine and shuffle the results
+        const shuffledPageIds = shuffleArray(allPageIds)
+          .filter(id => !usedPageIds.has(id))
+          .slice(0, 30); // Get more combined results
 
-        if (!forBuffer) {
-          fetchArticles(true);
+        if (shuffledPageIds.length > 0) {
+          await fetchContentForPages(shuffledPageIds, baseUrl);
         }
       } else {
-        // Existing random article fetching code...
-        const params = new URLSearchParams({
-          action: "query",
-          format: "json",
-          generator: "random",
-          grnnamespace: "0",
-          grnlimit: "20",
-          prop: "extracts|pageimages|info|categories",
-          inprop: "url",
-          exintro: "1",
-          exlimit: "max",
-          exsentences: "5",
-          explaintext: "1",
-          piprop: "thumbnail",
-          pithumbsize: "400",
-          origin: "*",
-        });
+        // Make multiple smaller random article requests
+        const fetchRandomBatch = async (count: number) => {
+          const params = new URLSearchParams({
+            action: "query",
+            format: "json",
+            generator: "random",
+            grnnamespace: "0",
+            grnlimit: count.toString(),
+            prop: "extracts|pageimages|info|categories",
+            inprop: "url",
+            exintro: "1",
+            exlimit: "max",
+            exsentences: "5",
+            explaintext: "1",
+            piprop: "thumbnail",
+            pithumbsize: "400",
+            origin: "*",
+          });
 
-        const requestUrl = `${baseUrl}?${params.toString()}`;
-        console.log('Fetching random articles from URL:', requestUrl);
+          const response = await fetch(`${baseUrl}?${params.toString()}`);
+          const data = await response.json();
+          return data.query?.pages ? Object.values(data.query.pages) : [];
+        };
 
-        const response = await fetch(requestUrl);
-        const data = await response.json();
+        // Make 3 parallel requests for 10 articles each
+        const batchResults = await Promise.all([
+          fetchRandomBatch(10),
+          fetchRandomBatch(10),
+          fetchRandomBatch(10),
+        ]);
 
-        if (data.error) {
-          console.error('API Error:', data.error);
-          setLoading(false);
-          return;
-        }
-
-        if (!data.query?.pages) {
-          console.log('No results found', data);
-          setLoading(false);
-          return;
-        }
-
-        const newArticles = Object.values(data.query.pages)
+        // Combine and process results
+        newArticles = batchResults.flat()
           .map((page: any): WikiArticle => ({
             title: page.title,
             extract: page.extract,
@@ -315,12 +257,15 @@ export function useWikiOptions() {
             url: page.canonicalurl,
             categories: page.categories?.map((cat: any) => cat.title.replace('Category:', '')) || [],
           }))
-          .filter((article) => article.thumbnail
-            && article.thumbnail.source
-            && article.url
-            && article.extract);
+          .filter((article) => 
+            article.thumbnail?.source && 
+            article.url && 
+            article.extract &&
+            !usedPageIds.has(article.pageid)
+          );
 
-        console.log('Processed articles:', newArticles);
+        // Shuffle and take desired amount
+        newArticles = shuffleArray(newArticles).slice(0, 30);
 
         await Promise.allSettled(
           newArticles
@@ -328,13 +273,14 @@ export function useWikiOptions() {
             .map((article) => preloadImage(article.thumbnail!.source))
         );
 
-        if (forBuffer) {
-          setBuffer(newArticles);
+        // Update used page IDs
+        newArticles.forEach(article => usedPageIds.add(article.pageid));
+        setUsedPageIds(new Set(usedPageIds));
+
+        if (articles.length === 0) {
+          setArticles(newArticles);
         } else {
-          setArticles((prev) => [...prev, ...newArticles]);
-          if (newArticles.length > 0) {
-            fetchArticles(true);
-          }
+          setBuffer(newArticles);
         }
       }
     } catch (error) {
@@ -342,9 +288,9 @@ export function useWikiOptions() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [currentLanguage, loading, articles.length, usedPageIds]);
 
-  const fetchContentForPages = async (pageIds: number[], baseUrl: string, forBuffer: boolean) => {
+  const fetchContentForPages = async (pageIds: number[], baseUrl: string) => {
     const contentParams = new URLSearchParams({
       action: "query",
       format: "json",
@@ -395,38 +341,12 @@ export function useWikiOptions() {
     pageIds.forEach(id => usedPageIds.add(id));
     setUsedPageIds(new Set(usedPageIds));
 
-    if (forBuffer) {
-      setBuffer(newArticles);
+    if (articles.length === 0) {
+      setArticles(newArticles);
     } else {
-      setArticles((prev) => [...prev, ...newArticles]);
-      // Start buffering more articles if we got results and aren't already buffering
-      if (newArticles.length > 0) {
-        fetchArticles(true);
-      }
+      setBuffer(newArticles);
     }
   };
-
-  const getMoreArticles = useCallback(() => {
-    if (buffer.length > 0) {
-      setArticles((prev) => [...prev, ...buffer]);
-      setBuffer([]);
-      fetchArticles(true);
-    } else {
-      fetchArticles(false);
-    }
-  }, [buffer]);
-
-  const updateCategories = useCallback((categories: string[]) => {
-    console.log('Updating categories:', categories);
-    const cleanedCategories = categories.map(cat => {
-      const cleanName = cat.replace(/^Category:/, '');
-      return cleanName;
-    });
-    selectedCategoriesRef.current = cleanedCategories;
-    setSelectedCategories(cleanedCategories);
-    setCurrentSubcategories([]); // Reset subcategories
-    setUsedPageIds(new Set()); // Reset used page IDs
-  }, []);
 
   return {
     currentLanguage,
@@ -437,11 +357,10 @@ export function useWikiOptions() {
       selectedCategoriesRef.current = categories;
       setArticles([]);
       setBuffer([]);
-      fetchArticles(false);
+      fetchArticles();
     },
     articles,
     loading,
-    fetchArticles: getMoreArticles,
-    mainCategories,
+    fetchArticles,
   };
 } 
