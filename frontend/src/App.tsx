@@ -2,14 +2,14 @@ import { useEffect, useRef, useCallback, useState } from "react";
 import { WikiCard } from "./components/WikiCard";
 import { Loader2, Search, X, Download } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
-import { LanguageSelector } from "./components/LanguageSelector";
+import { OptionsSelector } from "./components/OptionsSelector";
 import { useLikedArticles } from "./contexts/LikedArticlesContext";
-import { useWikiArticles } from "./hooks/useWikiArticles";
+import { useWikiOptions } from "./hooks/useWikiOptions";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
-  const { articles, loading, fetchArticles } = useWikiArticles();
+  const { articles, loading, fetchArticles } = useWikiOptions();
   const { likedArticles, toggleLike } = useLikedArticles();
   const observerTarget = useRef(null);
   const [searchQuery, setSearchQuery] = useState("");
@@ -93,7 +93,7 @@ function App() {
         >
           Likes
         </button>
-        <LanguageSelector />
+        <OptionsSelector />
       </div>
 
       {showAbout && (

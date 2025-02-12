@@ -1,4 +1,12 @@
-export const LANGUAGES = [
+export interface Language {
+  id: string;
+  name: string;
+  flag: string;
+  api: string;
+  article: string;
+}
+
+export const LANGUAGES: Language[] = [
   {
     id: "en",
     name: "English",
@@ -141,7 +149,7 @@ export const LANGUAGES = [
   },
   {
     id: "ur",
-    name: "Pakistan",
+    name: "اردو",
     flag: "https://hatscripts.github.io/circle-flags/flags/pk.svg",
     api: "https://ur.wikipedia.org/w/api.php?",
     article: "https://ur.wikipedia.org/wiki/",
