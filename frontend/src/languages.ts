@@ -35,6 +35,13 @@ export const LANGUAGES = [
     article: "https://it.wikipedia.org/wiki/",
   },
   {
+    id: "uk",
+    name: "Українська",
+    flag: "https://hatscripts.github.io/circle-flags/flags/ua.svg",
+    api: "https://uk.wikipedia.org/w/api.php?",
+    article: "https://uk.wikipedia.org/wiki/",
+  },
+  {
     id: "pt",
     name: "Português",
     flag: "https://hatscripts.github.io/circle-flags/flags/br.svg",
@@ -139,4 +146,25 @@ export const LANGUAGES = [
     api: "https://nl.wikipedia.org/w/api.php?",
     article: "https://nl.wikipedia.org/wiki/",
   },
+  {
+    id: "ur",
+    name: "Pakistan",
+    flag: "https://hatscripts.github.io/circle-flags/flags/pk.svg",
+    api: "https://ur.wikipedia.org/w/api.php?",
+    article: "https://ur.wikipedia.org/wiki/",
+  },
+  {
+    id: "hr",
+    name: "Hrvatski",
+    flag: "https://hatscripts.github.io/circle-flags/flags/hr.svg",
+    api: "https://hr.wikipedia.org/w/api.php?",
+    article: "https://hr.wikipedia.org/wiki/",
+  },
+  {
+    id: "sv",
+    name: "Svenska",
+    flag: "https://hatscripts.github.io/circle-flags/flags/se.svg",
+    api: "https://sv.wikipedia.org/w/api.php?",
+    article: "https://sv.wikipedia.org/wiki/",
+  }
 ];

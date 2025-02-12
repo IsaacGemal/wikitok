@@ -35,7 +35,7 @@ export function LanguageSelector() {
 
       {showDropdown && (
         <div className="absolute overflow-y-auto max-h-[205px] py-2 w-30 right-0 top-full mt-1 bg-gray-900 rounded-md shadow-lg">
-          {LANGUAGES.map((language) => (
+          {LANGUAGES.sort((a,b) => a.id.localeCompare(b.id)).map((language) => (
             <button
               key={language.id}
               onClick={() => setLanguage(language.id)}
