@@ -5,10 +5,14 @@ import { Analytics } from "@vercel/analytics/react";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { useLikedArticles } from "./contexts/LikedArticlesContext";
 import { useWikiArticles } from "./hooks/useWikiArticles";
+import { WikiViewer } from "./components/WikiViewer";
+import type { WikiArticle } from "./components/WikiCard";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
   const [showLikes, setShowLikes] = useState(false);
+  const [currentArticle, setCurrentArticle] = useState<WikiArticle | null>(null);
+  const [currentIndex, setCurrentIndex] = useState(-1);
   const { articles, loading, fetchArticles } = useWikiArticles();
   const { likedArticles, toggleLike } = useLikedArticles();
   const observerTarget = useRef(null);
@@ -66,6 +70,44 @@ function App() {
     linkElement.setAttribute("href", dataUri);
     linkElement.setAttribute("download", exportFileDefaultName);
     linkElement.click();
+  };
+
+  const handleViewArticle = (article: WikiArticle, index: number) => {
+    setCurrentArticle(article);
+    setCurrentIndex(index);
+  };
+
+  const handleNextArticle = () => {
+    if (currentIndex < articles.length - 1) {
+      setCurrentArticle(articles[currentIndex + 1]);
+      setCurrentIndex(currentIndex + 1);
+    }
+  };
+
+  const handlePreviousArticle = () => {
+    if (currentIndex > 0) {
+      setCurrentArticle(articles[currentIndex - 1]);
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  const handleShare = async () => {
+    if (!currentArticle) return;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: currentArticle.title,
+          text: currentArticle.extract,
+          url: currentArticle.url
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      await navigator.clipboard.writeText(currentArticle.url);
+      alert('Link copied to clipboard!');
+    }
   };
 
   return (
@@ -241,8 +283,25 @@ function App() {
         </div>
       )}
 
-      {articles.map((article) => (
-        <WikiCard key={article.pageid} article={article} />
+      {currentArticle && (
+        <WikiViewer
+          article={currentArticle}
+          onClose={() => {
+            setCurrentArticle(null);
+            setCurrentIndex(-1);
+          }}
+          onNext={handleNextArticle}
+          onPrevious={handlePreviousArticle}
+          onShare={handleShare}
+        />
+      )}
+
+      {articles.map((article, index) => (
+        <WikiCard
+          key={article.pageid}
+          article={article}
+          onViewArticle={() => handleViewArticle(article, index)}
+        />
       ))}
       <div ref={observerTarget} className="h-10 -mt-1" />
       {loading && (

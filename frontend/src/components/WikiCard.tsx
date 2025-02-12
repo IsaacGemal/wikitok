@@ -16,9 +16,10 @@ export interface WikiArticle {
 
 interface WikiCardProps {
     article: WikiArticle;
+    onViewArticle: () => void;
 }
 
-export function WikiCard({ article }: WikiCardProps) {
+export function WikiCard({ article, onViewArticle }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const { toggleLike, isLiked } = useLikedArticles();
 
@@ -74,14 +75,12 @@ export function WikiCard({ article }: WikiCardProps) {
                 {/* Content container with z-index to ensure it's above the image */}
                 <div className="absolute backdrop-blur-xs bg-black/30 bottom-[10vh] left-0 right-0 p-6 text-white z-10">
                     <div className="flex justify-between items-start mb-3">
-                        <a
-                            href={article.url}
-                            target="_blank"
-                            rel="noopener noreferrer"
+                        <button
+                            onClick={onViewArticle}
                             className="hover:text-gray-200 transition-colors"
                         >
                             <h2 className="text-2xl font-bold drop-shadow-lg">{article.title}</h2>
-                        </a>
+                        </button>
                         <div className="flex gap-2">
                             <button
                                 onClick={() => toggleLike(article)}
@@ -105,14 +104,12 @@ export function WikiCard({ article }: WikiCardProps) {
                         </div>
                     </div>
                     <p className="text-gray-100 mb-4 drop-shadow-lg line-clamp-6">{article.extract}</p>
-                    <a
-                        href={article.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                    <button
+                        onClick={onViewArticle}
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
                     >
                         Read more →
-                    </a>
+                    </button>
                 </div>
             </div>
         </div>
