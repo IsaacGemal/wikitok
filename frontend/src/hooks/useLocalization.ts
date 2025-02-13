@@ -4,11 +4,8 @@ import { LANGUAGES } from "../languages";
 export function useLocalization() {
   const getInitialLanguage = useCallback(() => {
     const savedLanguageId = localStorage.getItem("lang");
-    const defaultLanguage = LANGUAGES.find((lang) => lang.id === "en");
     return (
-      LANGUAGES.find((lang) => lang.id === savedLanguageId) ||
-      defaultLanguage ||
-      LANGUAGES[0]
+      LANGUAGES.find((lang) => lang.id === savedLanguageId) || LANGUAGES[0]
     );
   }, []);
 
