@@ -173,5 +173,12 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/se.svg",
     api: "https://sv.wikipedia.org/w/api.php?",
     article: "https://sv.wikipedia.org/wiki/",
+  },
+  {
+   id: "gr",
+    name: "Ελληνικά",
+    flag: "https://hatscripts.github.io/circle-flags/flags/gr.svg",
+    api: "https://el.wikipedia.org/w/api.php?",
+    article: "https://el.wikipedia.org/wiki/",
   }
 ];
