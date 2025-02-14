@@ -105,6 +105,13 @@ export const LANGUAGES = [
     article: "https://hi.wikipedia.org/wiki/",
   },
   {
+    id: "hu",
+    name: "Magyar",
+    flag: "https://hatscripts.github.io/circle-flags/flags/hu.svg",
+    api: "https://hu.wikipedia.org/w/api.php?",
+    article: "https://hu.wikipedia.org/wiki/",
+  },
+  {
     id: "eu",
     name: "Euskara",
     flag: "https://hatscripts.github.io/circle-flags/flags/es-pv.svg",
