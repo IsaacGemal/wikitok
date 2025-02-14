@@ -21,7 +21,6 @@ interface WikiCardProps {
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const { toggleLike, isLiked } = useLikedArticles();
-    const [lastTap, setLastTap] = useState(0);
 
     // Add debugging log
     console.log('Article data:', {
@@ -47,16 +46,8 @@ export function WikiCard({ article }: WikiCardProps) {
         }
     };
 
-    const handleDoubleTap = () => {
-        const now = Date.now();
-        if (now - lastTap < 300){
-            toggleLike(article)
-        }
-        setLastTap(now);
-    }
-
     return (
-        <div className="h-screen w-full flex items-center justify-center snap-start relative" onDoubleClick={() => toggleLike(article)} onTouchStart={handleDoubleTap}>
+        <div className="h-screen w-full flex items-center justify-center snap-start relative" onDoubleClick={() => toggleLike(article)}>
             <div className="h-full w-full relative">
                 {article.thumbnail ? (
                     <div className="absolute inset-0">
