@@ -28,8 +28,8 @@ export function useWikiArticles() {
             format: "json",
             generator: "random",
             grnnamespace: "0",
-            prop: "extracts|pageimages|info",
-            inprop: "url",
+            prop: "extracts|info|pageimages",
+            inprop: "url|varianttitles",
             grnlimit: "20",
             exintro: "1",
             exlimit: "max",
@@ -38,6 +38,7 @@ export function useWikiArticles() {
             piprop: "thumbnail",
             pithumbsize: "800",
             origin: "*",
+            variant: currentLanguage.id,
           })
       );
 
@@ -46,6 +47,7 @@ export function useWikiArticles() {
         .map(
           (page: any): WikiArticle => ({
             title: page.title,
+            displaytitle: page.varianttitles[currentLanguage.id],
             extract: page.extract,
             pageid: page.pageid,
             thumbnail: page.thumbnail,
