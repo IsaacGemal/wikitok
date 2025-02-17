@@ -230,4 +230,11 @@ export const LANGUAGES = [
     api: "https://ro.wikipedia.org/w/api.php?",
     article: "https://ro.wikipedia.org/wiki/",
   },
+  {
+    id: "ca",
+    name: "Català",
+    flag: "https://hatscripts.github.io/circle-flags/flags/es-ct.svg",
+    api: "https://ca.wikipedia.org/w/api.php?",
+    article: "https://ca.wikipedia.org/wiki/",
+  },
 ];
