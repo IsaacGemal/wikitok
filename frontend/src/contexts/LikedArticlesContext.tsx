@@ -1,5 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import type { WikiArticle } from "../components/WikiCard";
+import { Heart } from "lucide-react";
+import '../assets/heartAnimation.css';
 
 interface LikedArticlesContextType {
     likedArticles: WikiArticle[];
@@ -15,6 +17,8 @@ export function LikedArticlesProvider({ children }: { children: ReactNode }) {
         return saved ? JSON.parse(saved) : [];
     });
 
+    const [showHeart, setShowHeart] = useState(false);
+
     useEffect(() => {
         localStorage.setItem("likedArticles", JSON.stringify(likedArticles));
     }, [likedArticles]);
@@ -25,6 +29,8 @@ export function LikedArticlesProvider({ children }: { children: ReactNode }) {
             if (alreadyLiked) {
                 return prev.filter((a) => a.pageid !== article.pageid);
             } else {
+                setShowHeart(true);
+                setTimeout(() => setShowHeart(false), 800);
                 return [...prev, article];
             }
         });
@@ -37,6 +43,11 @@ export function LikedArticlesProvider({ children }: { children: ReactNode }) {
     return (
         <LikedArticlesContext.Provider value={{ likedArticles, toggleLike, isLiked }}>
             {children}
+            {showHeart && (
+                <div className="heart-animation">
+                    <Heart size={200} strokeWidth={0} className="fill-white"/>
+                </div>
+            )}
         </LikedArticlesContext.Provider>
     );
 }
@@ -47,4 +58,4 @@ export function useLikedArticles() {
         throw new Error("useLikedArticles must be used within a LikedArticlesProvider");
     }
     return context;
-} 
+}

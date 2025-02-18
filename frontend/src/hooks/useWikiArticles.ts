@@ -15,7 +15,7 @@ export function useWikiArticles() {
   const [articles, setArticles] = useState<WikiArticle[]>([]);
   const [loading, setLoading] = useState(false);
   const [buffer, setBuffer] = useState<WikiArticle[]>([]);
-  const {currentLanguage} = useLocalization()
+  const { currentLanguage } = useLocalization();
 
   const fetchArticles = async (forBuffer = false) => {
     if (loading) return;
@@ -36,24 +36,29 @@ export function useWikiArticles() {
             exsentences: "5",
             explaintext: "1",
             piprop: "thumbnail",
-            pithumbsize: "400",
+            pithumbsize: "800",
             origin: "*",
           })
       );
 
       const data = await response.json();
       const newArticles = Object.values(data.query.pages)
-        .map((page: any): WikiArticle  => ({
-          title: page.title,
-          extract: page.extract,
-          pageid: page.pageid,
-          thumbnail: page.thumbnail,
-          url: page.canonicalurl,
-        }))
-        .filter((article) => article.thumbnail
-                             && article.thumbnail.source
-                             && article.url
-                             && article.extract);
+        .map(
+          (page: any): WikiArticle => ({
+            title: page.title,
+            extract: page.extract,
+            pageid: page.pageid,
+            thumbnail: page.thumbnail,
+            url: page.canonicalurl,
+          })
+        )
+        .filter(
+          (article) =>
+            article.thumbnail &&
+            article.thumbnail.source &&
+            article.url &&
+            article.extract
+        );
 
       await Promise.allSettled(
         newArticles
