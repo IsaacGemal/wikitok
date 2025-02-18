@@ -23,12 +23,17 @@ export function LanguageSelector() {
 
       {showDropdown && (
         <div className="dropdown">
-          {LANGUAGES.map((language) => (
-            <button key={language.id} onClick={() => setLanguage(language.id)}>
-              <img className="w-5" src={language.flag} alt={language.name} />
-              <span className="text-xs">{language.name}</span>
-            </button>
-          ))}
+          {LANGUAGES.sort((a, b) => a.id.localeCompare(b.id)).map(
+            (language) => (
+              <button
+                key={language.id}
+                onClick={() => setLanguage(language.id)}
+              >
+                <img className="w-5" src={language.flag} alt={language.name} />
+                <span className="text-xs">{language.name}</span>
+              </button>
+            )
+          )}
         </div>
       )}
     </div>

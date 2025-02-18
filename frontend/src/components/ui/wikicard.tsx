@@ -85,7 +85,7 @@ export function WikiCard({ article }: WikiCardProps) {
   };
 
   return (
-    <div className="card-container">
+    <div className="card-container" onDoubleClick={() => toggleLike(article)}>
       {article.thumbnail ? (
         <div className="card-image">
           <img
@@ -98,6 +98,7 @@ export function WikiCard({ article }: WikiCardProps) {
               console.error("Image failed to load:", e);
               setImageLoaded(true);
             }}
+            draggable={false}
           />
           {!imageLoaded && <div className="image-placeholder" />}
           <div className="image-overlay" />
