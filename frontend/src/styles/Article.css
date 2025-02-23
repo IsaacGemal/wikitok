@@ -1,0 +1,24 @@
+.article-container {
+    margin: 1rem 0;
+    padding: 1rem;
+  }
+  
+  .article-container:focus,
+  .article-container:focus-within {
+    outline: 2px solid #007AFF;
+    outline-offset: 2px;
+  }
+  
+  .article-title {
+    margin-bottom: 1rem;
+  }
+  
+  .article-image {
+    max-width: 100%;
+    height: auto;
+    margin: 1rem 0;
+  }
+  
+  .article-content {
+    line-height: 1.6;
+  }

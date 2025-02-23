@@ -27,7 +27,7 @@ export const LANGUAGES = [
     api: "https://es.wikipedia.org/w/api.php?",
     article: "https://es.wikipedia.org/wiki/",
   },
-    {
+  {
     id: "eo",
     name: "Esperanto",
     flag: "https://upload.wikimedia.org/wikipedia/commons/2/20/Verda_stelo_%28unukolora%29.svg",
@@ -105,6 +105,13 @@ export const LANGUAGES = [
     article: "https://hi.wikipedia.org/wiki/",
   },
   {
+    id: "hu",
+    name: "Magyar",
+    flag: "https://hatscripts.github.io/circle-flags/flags/hu.svg",
+    api: "https://hu.wikipedia.org/w/api.php?",
+    article: "https://hu.wikipedia.org/wiki/",
+  },
+  {
     id: "eu",
     name: "Euskara",
     flag: "https://hatscripts.github.io/circle-flags/flags/es-pv.svg",
@@ -173,5 +180,61 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/se.svg",
     api: "https://sv.wikipedia.org/w/api.php?",
     article: "https://sv.wikipedia.org/wiki/",
-  }
+  },
+  {
+    id: "fi",
+    name: "Suomi",
+    flag: "https://hatscripts.github.io/circle-flags/flags/fi.svg",
+    api: "https://fi.wikipedia.org/w/api.php?",
+    article: "https://fi.wikipedia.org/wiki/",
+  },
+  {
+    id: "gr",
+    name: "Ελληνικά",
+    flag: "https://hatscripts.github.io/circle-flags/flags/gr.svg",
+    api: "https://el.wikipedia.org/w/api.php?",
+    article: "https://el.wikipedia.org/wiki/",
+  },
+  {
+    id: "ko",
+    name: "한국어",
+    flag: "https://hatscripts.github.io/circle-flags/flags/kr.svg",
+    api: "https://ko.wikipedia.org/w/api.php?",
+    article: "https://ko.wikipedia.org/wiki/",
+  },
+  {
+    id: "vi",
+    name: "Tiếng Việt",
+    flag: "https://hatscripts.github.io/circle-flags/flags/vn.svg",
+    api: "https://vi.wikipedia.org/w/api.php?",
+    article: "https://vi.wikipedia.org/wiki/",
+  },
+  {
+    id: "bn",
+    name: "বাংলা",
+    flag: "https://hatscripts.github.io/circle-flags/flags/bd.svg",
+    api: "https://bn.wikipedia.org/w/api.php?",
+    article: "https://bn.wikipedia.org/wiki/",
+  },
+  {
+    id: "th",
+    name: "ไทย",
+    flag: "https://hatscripts.github.io/circle-flags/flags/th.svg",
+    api: "https://th.wikipedia.org/w/api.php?",
+    article: "https://th.wikipedia.org/wiki/",
+  },
+  {
+    id: "ro",
+    name: "Română",
+    flag: "https://hatscripts.github.io/circle-flags/flags/ro.svg",
+    api: "https://ro.wikipedia.org/w/api.php?",
+    article: "https://ro.wikipedia.org/wiki/",
+  },
+  {
+    id: "ca",
+    name: "Català",
+    flag: "https://hatscripts.github.io/circle-flags/flags/es-ct.svg",
+    api: "https://ca.wikipedia.org/w/api.php?",
+    article: "https://ca.wikipedia.org/wiki/",
+  },
 ];
