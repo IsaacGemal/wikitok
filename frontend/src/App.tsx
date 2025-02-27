@@ -1,10 +1,10 @@
 import { useEffect, useRef, useCallback, useState } from "react";
-import { WikiCard } from "./components/WikiCard";
 import { Loader2, Search, X, Download } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
-import { LanguageSelector } from "./components/LanguageSelector";
-import { useLikedArticles } from "./contexts/LikedArticlesContext";
-import { useWikiArticles } from "./hooks/useWikiArticles";
+import { WikiCard } from "@/components/WikiCard";
+import { LanguageSelector } from "@/components/LanguageSelector";
+import { useLikedArticles } from "@/contexts/LikedArticlesContext";
+import { useWikiArticles } from "@/hooks/useWikiArticles";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
@@ -59,8 +59,9 @@ function App() {
     const dataUri =
       "data:application/json;charset=utf-8," + encodeURIComponent(dataStr);
 
-    const exportFileDefaultName = `wikitok-favorites-${new Date().toISOString().split("T")[0]
-      }.json`;
+    const exportFileDefaultName = `wikitok-favorites-${
+      new Date().toISOString().split("T")[0]
+    }.json`;
 
     const linkElement = document.createElement("a");
     linkElement.setAttribute("href", dataUri);
@@ -144,8 +145,9 @@ function App() {
             </p>
           </div>
           <div
-            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${showAbout ? "block" : "hidden"
-              }`}
+            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${
+              showAbout ? "block" : "hidden"
+            }`}
             onClick={() => setShowAbout(false)}
           ></div>
         </div>
@@ -234,8 +236,9 @@ function App() {
             </div>
           </div>
           <div
-            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${showLikes ? "block" : "hidden"
-              }`}
+            className={`w-full h-full z-[40] top-1 left-1  bg-[rgb(28 25 23 / 43%)] fixed  ${
+              showLikes ? "block" : "hidden"
+            }`}
             onClick={() => setShowLikes(false)}
           ></div>
         </div>
