@@ -35,18 +35,16 @@ export function LanguageSelector() {
 
       {showDropdown && (
         <div className="absolute overflow-y-auto max-h-[205px] py-2 w-40 right-0 top-full mt-1 bg-gray-900 rounded-md shadow-lg">
-          {LANGUAGES.sort((a, b) => a.id.localeCompare(b.id)).map(
-            (language) => (
-              <button
-                key={language.id}
-                onClick={() => setLanguage(language.id)}
-                className="w-full items-center flex gap-3 px-3 py-1 hover:bg-gray-800"
-              >
-                <img className="w-5" src={language.flag} alt={language.name} />
-                <span className="text-xs">{language.name}</span>
-              </button>
-            )
-          )}
+          {LANGUAGES.sort((a,b) => a.id.localeCompare(b.id)).map((language) => (
+            <button
+              key={language.id}
+              onClick={() => setLanguage(language.id)}
+              className="w-full items-center flex gap-3 px-3 py-1 hover:bg-gray-800"
+            >
+              <img className="w-5" src={language.flag} alt={language.name} />
+              <span className="text-xs">{language.name}</span>
+            </button>
+          ))}
         </div>
       )}
     </div>
