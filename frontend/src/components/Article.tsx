@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC } from 'react';
 
 interface ArticleProps {
   title: string;
@@ -8,7 +8,7 @@ interface ArticleProps {
 
 const Article: FC<ArticleProps> = ({ title, content, image }) => {
   return (
-    <article
+    <article 
       className="article-container"
       role="article"
       aria-labelledby="article-title"
@@ -16,16 +16,16 @@ const Article: FC<ArticleProps> = ({ title, content, image }) => {
       <h2 id="article-title" className="article-title">
         {title}
       </h2>
-
+      
       {image && (
-        <img
-          src={image}
+        <img 
+          src={image} 
           alt={`Illustration for article: ${title}`}
           className="article-image"
         />
       )}
-
-      <div
+      
+      <div 
         className="article-content"
         role="contentinfo"
         aria-label="Article content"
