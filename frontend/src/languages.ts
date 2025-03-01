@@ -77,7 +77,7 @@ export const LANGUAGES = [
     article: "https://fr.wikipedia.org/wiki/",
   },
   {
-    id: "gr",
+    id: "el",
     name: "Ελληνικά",
     flag: "https://hatscripts.github.io/circle-flags/flags/gr.svg",
     api: "https://el.wikipedia.org/w/api.php?",
