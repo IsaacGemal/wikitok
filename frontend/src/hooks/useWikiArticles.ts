@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import { useLocalization } from "./useLocalization";
-import type { WikiArticle } from "../components/WikiCard";
+import { useLocalization } from "@/hooks/useLocalization";
+import type { WikiArticle } from "@/components/WikiCard";
 
 const preloadImage = (src: string): Promise<void> => {
   return new Promise((resolve, reject) => {
