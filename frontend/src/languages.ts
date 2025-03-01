@@ -75,6 +75,7 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/fr.svg",
     api: "https://fr.wikipedia.org/w/api.php?",
     article: "https://fr.wikipedia.org/wiki/",
+    readMore: "En savoir plus",
   },
   {
     id: "el",

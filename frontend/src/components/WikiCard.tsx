@@ -1,6 +1,7 @@
 import { Share2, Heart } from 'lucide-react';
 import { useState } from 'react';
 import { useLikedArticles } from '../contexts/LikedArticlesContext';
+import { useLocalization } from '../hooks/useLocalization';
 
 export interface WikiArticle {
     title: string;
@@ -22,6 +23,7 @@ interface WikiCardProps {
 export function WikiCard({ article }: WikiCardProps) {
     const [imageLoaded, setImageLoaded] = useState(false);
     const { toggleLike, isLiked } = useLikedArticles();
+    const { currentLanguage } = useLocalization();
 
     // Add debugging log
     console.log('Article data:', {
@@ -113,7 +115,7 @@ export function WikiCard({ article }: WikiCardProps) {
                         rel="noopener noreferrer"
                         className="inline-block text-white hover:text-gray-200 drop-shadow-lg"
                     >
-                        Read more →
+                        {currentLanguage.readMore ?? "Read more"} →
                     </a>
                 </div>
             </div>
