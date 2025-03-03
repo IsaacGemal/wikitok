@@ -98,6 +98,13 @@ export const LANGUAGES = [
     article: "https://eu.wikipedia.org/wiki/",
   },
   {
+    id: "te",
+    name: "Telugu",
+    flag: "https://hatscripts.github.io/circle-flags/flags/in.svg",
+    api: "https://te.wikipedia.org/w/api.php?",
+    article: "https://te.wikipedia.org/wiki/",
+  }
+  {
     id: "tr",
     name: "Türkçe",
     flag: "https://hatscripts.github.io/circle-flags/flags/tr.svg",
