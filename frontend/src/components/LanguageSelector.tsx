@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { LANGUAGES } from "../languages";
 import { useLocalization } from "../hooks/useLocalization";
+import { Globe } from "lucide-react";
 
 export function LanguageSelector() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -29,8 +30,8 @@ export function LanguageSelector() {
       onClick={() => setShowDropdown(!showDropdown)}
       ref={dropdownRef}
     >
-      <button className="text-sm text-white/70 hover:text-white transition-colors">
-        Language
+      <button className="button">
+        <Globe />
       </button>
 
       {showDropdown && (
