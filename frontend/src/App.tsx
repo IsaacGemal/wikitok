@@ -1,6 +1,6 @@
 import { useEffect, useRef, useCallback, useState } from "react";
 import { WikiCard } from "./components/WikiCard";
-import { Loader2, Search, X, Download } from "lucide-react";
+import { Loader2, Search, X, Download, Heart, Info } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
 import { LanguageSelector } from "./components/LanguageSelector";
 import { useLikedArticles } from "./contexts/LikedArticlesContext";
@@ -79,19 +79,15 @@ function App() {
         </button>
       </div>
 
-      <div className="fixed top-4 right-4 z-50 flex flex-col items-end gap-2">
-        <button
+      <div className="fixed top-4 right-4 z-50 flex items-end gap-2">
+        <Info
           onClick={() => setShowAbout(!showAbout)}
           className="text-sm text-white/70 hover:text-white transition-colors"
-        >
-          About
-        </button>
-        <button
+        />
+        <Heart
           onClick={() => setShowLikes(!showLikes)}
-          className="text-sm text-white/70 hover:text-white transition-colors"
-        >
-          Likes
-        </button>
+          className="text-sm text-white/70 hover:text-white transition-colors fill-white"
+        />
         <LanguageSelector />
       </div>
 
