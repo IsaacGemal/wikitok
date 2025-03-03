@@ -182,6 +182,13 @@ export const LANGUAGES = [
     article: "https://sk.wikipedia.org/wiki/",
   },
   {
+    id: "sr",
+    name: "Српски / Srpski",
+    flag: "https://hatscripts.github.io/circle-flags/flags/rs.svg",
+    api: "https://sr.wikipedia.org/w/api.php?",
+    article: "https://sr.wikipedia.org/wiki/",
+  },
+  {
     id: "sv",
     name: "Svenska",
     flag: "https://hatscripts.github.io/circle-flags/flags/se.svg",
