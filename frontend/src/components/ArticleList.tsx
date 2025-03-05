@@ -1,6 +1,6 @@
 import { FC, KeyboardEvent } from 'react';
-import Article from './Article';
-import { ArticleProps } from '../types/ArticleProps';
+import Article from '@/components/Article';
+import { ArticleProps } from '@/types/ArticleProps';
 interface ArticleListProps {
   articles: ArticleProps[];
   onArticleSelect?: (article: ArticleProps) => void;

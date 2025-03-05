@@ -1,6 +1,6 @@
 import { Share2, Heart } from 'lucide-react';
 import { useState } from 'react';
-import { useLikedArticles } from '../contexts/LikedArticlesContext';
+import { useLikedArticles } from '@/contexts/LikedArticlesContext';
 
 export interface WikiArticle {
     title: string;

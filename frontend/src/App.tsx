@@ -1,10 +1,10 @@
 import { useEffect, useRef, useCallback, useState } from "react";
-import { WikiCard } from "./components/WikiCard";
 import { Loader2, Search, X, Download } from "lucide-react";
 import { Analytics } from "@vercel/analytics/react";
-import { LanguageSelector } from "./components/LanguageSelector";
-import { useLikedArticles } from "./contexts/LikedArticlesContext";
-import { useWikiArticles } from "./hooks/useWikiArticles";
+import { LanguageSelector } from "@/components/LanguageSelector";
+import { WikiCard } from "@/components/WikiCard";
+import { useLikedArticles } from "@/contexts/LikedArticlesContext";
+import { useWikiArticles } from "@/hooks/useWikiArticles";
 
 function App() {
   const [showAbout, setShowAbout] = useState(false);
