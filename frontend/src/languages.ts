@@ -21,6 +21,13 @@ export const LANGUAGES = [
     article: "https://bn.wikipedia.org/wiki/",
   },
   {
+    id: "ca",
+    name: "Català",
+    flag: "https://hatscripts.github.io/circle-flags/flags/es-ct.svg",
+    api: "https://ca.wikipedia.org/w/api.php?",
+    article: "https://ca.wikipedia.org/wiki/",
+  },
+  {
     id: "cs",
     name: "Čeština",
     flag: "https://hatscripts.github.io/circle-flags/flags/cz.svg",
@@ -82,6 +89,20 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/gr.svg",
     api: "https://el.wikipedia.org/w/api.php?",
     article: "https://el.wikipedia.org/wiki/",
+  },
+  {
+    id: "gan-hans",
+    name: "赣语（简体）",
+    flag: "https://hatscripts.github.io/circle-flags/flags/cn.svg",
+    api: "https://gan.wikipedia.org/w/api.php?",
+    article: "https://gan.wikipedia.org/wiki/",
+  },
+  {
+    id: "gan-hant",
+    name: "贛語（繁體）",
+    flag: "https://hatscripts.github.io/circle-flags/flags/cn.svg",
+    api: "https://gan.wikipedia.org/w/api.php?",
+    article: "https://gan.wikipedia.org/wiki/",
   },
   {
     id: "he",
@@ -231,6 +252,27 @@ export const LANGUAGES = [
     article: "https://vi.wikipedia.org/wiki/",
   },
   {
+    id: "wuu-hans",
+    name: "吴语（简体）",
+    flag: "https://hatscripts.github.io/circle-flags/flags/cn.svg",
+    api: "https://wuu.wikipedia.org/w/api.php?",
+    article: "https://wuu.wikipedia.org/wiki/",
+  },
+  {
+    id: "wuu-hant",
+    name: "吳語（繁體）",
+    flag: "https://hatscripts.github.io/circle-flags/flags/cn.svg",
+    api: "https://wuu.wikipedia.org/w/api.php?",
+    article: "https://wuu.wikipedia.org/wiki/",
+  },
+  {
+    id: "yue-hant",
+    name: "粵語（繁體）",
+    flag: "https://hatscripts.github.io/circle-flags/flags/hk.svg",
+    api: "https://zh-yue.wikipedia.org/w/api.php?",
+    article: "https://zh-yue.wikipedia.org/wiki/",
+  },
+  {
     id: "zh-cn",
     name: "中文（中国大陆）",
     flag: "https://hatscripts.github.io/circle-flags/flags/cn.svg",
@@ -271,12 +313,5 @@ export const LANGUAGES = [
     flag: "https://hatscripts.github.io/circle-flags/flags/tw.svg",
     api: "https://zh.wikipedia.org/w/api.php?",
     article: "https://zh.wikipedia.org/wiki/",
-  },
-  {
-    id: "ca",
-    name: "Català",
-    flag: "https://hatscripts.github.io/circle-flags/flags/es-ct.svg",
-    api: "https://ca.wikipedia.org/w/api.php?",
-    article: "https://ca.wikipedia.org/wiki/",
   },
 ];
