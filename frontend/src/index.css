@@ -5,10 +5,13 @@ html, body {
   overflow: hidden;
 }
 
-.hide-scroll::-webkit-scrollbar {
-  display: none;
+#element::-webkit-scrollbar-track {
+  -webkit-box-shadow: 5px 5px 5px -5px rgba(34, 60, 80, 0.2) inset;
+  background-color: #f9f9fd;
 }
-.hide-scroll {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+#element::-webkit-scrollbar-thumb {
+  background-color: #356184;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%,
+  color-stop(.5, rgba(255, 255, 255, .25)),
+  color-stop(.5, transparent), to(transparent));
 }
