@@ -49,7 +49,7 @@ export function WikiCard({ article }: WikiCardProps) {
     };
 
     return (
-        <div className="h-screen w-full flex items-center justify-center snap-start relative" onDoubleClick={() => toggleLike(article)}>
+        <div className="h-dvh w-full flex items-center justify-center snap-start relative" onDoubleClick={() => toggleLike(article)}>
             <div className="h-full w-full relative">
                 {article.thumbnail ? (
                     <div className="absolute inset-0">
@@ -74,7 +74,7 @@ export function WikiCard({ article }: WikiCardProps) {
                     <div className="absolute inset-0 bg-gray-900" />
                 )}
                 {/* Content container with z-index to ensure it's above the image */}
-                <div className="absolute backdrop-blur-xs bg-black/30 bottom-[10vh] left-0 right-0 p-6 text-white z-10">
+                <div className="absolute backdrop-blur-xs bg-black/30 bottom-[4dvh] left-0 right-0 p-6 text-white z-10 md:bottom-[10dvh]">
                     <div className="flex justify-between items-start mb-3">
                         <a
                             href={article.url}
