@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
-import { LANGUAGES } from "../languages";
-import { useLocalization } from "../hooks/useLocalization";
+import { LANGUAGES } from "@/languages";
+import { useLocalization } from "@/hooks/useLocalization";
 
 export function LanguageSelector() {
   const [showDropdown, setShowDropdown] = useState(false);
