@@ -224,6 +224,13 @@ export const LANGUAGES = [
     article: "https://sv.wikipedia.org/wiki/",
   },
   {
+    id: "te",
+    name: "Telugu",
+    flag: "https://hatscripts.github.io/circle-flags/flags/in.svg",
+    api: "https://te.wikipedia.org/w/api.php?",
+    article: "https://te.wikipedia.org/wiki/",
+  },
+  {
     id: "th",
     name: "ไทย",
     flag: "https://hatscripts.github.io/circle-flags/flags/th.svg",
