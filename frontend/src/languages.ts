@@ -225,7 +225,7 @@ export const LANGUAGES = [
   },
   {
     id: "te",
-    name: "Telugu",
+    name: "తెలుగు",
     flag: "https://hatscripts.github.io/circle-flags/flags/in.svg",
     api: "https://te.wikipedia.org/w/api.php?",
     article: "https://te.wikipedia.org/wiki/",
