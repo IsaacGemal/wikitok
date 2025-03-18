@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { LANGUAGES } from "../languages";
+import { LANGUAGES } from "@/languages";
 
 export function useLocalization() {
   const getInitialLanguage = useCallback(() => {

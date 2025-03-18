@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from "react";
-import type { WikiArticle } from "../components/WikiCard";
 import { Heart } from "lucide-react";
-import '../assets/heartAnimation.css';
+import type { WikiArticle } from "@/components/WikiCard";
+import '@/assets/heartAnimation.css';
 
 interface LikedArticlesContextType {
     likedArticles: WikiArticle[];
