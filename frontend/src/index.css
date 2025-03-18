@@ -1,13 +1,24 @@
 @import "tailwindcss";
 
-html, body {
+:root {
+  --bg-color: 0, 0, 0;
+  --fg-color: 28, 30, 33;
+  --text-color: 246, 246, 246;
+  --red: 255, 69, 58;
+  interpolate-size: allow-keywords;
+}
+
+html,
+body {
   overscroll-behavior-y: contain;
   overflow: hidden;
+  color: rgb(var(--text-color));
 }
 
 .hide-scroll::-webkit-scrollbar {
   display: none;
 }
+
 .hide-scroll {
   -ms-overflow-style: none;
   scrollbar-width: none;
