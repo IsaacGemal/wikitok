@@ -69,7 +69,7 @@ function App() {
   };
 
   return (
-    <div className="h-screen w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory hide-scroll">
+    <div className="h-dvh w-full bg-black text-white overflow-y-scroll snap-y snap-mandatory hide-scroll">
       <div className="fixed top-4 left-4 z-50">
         <button
           onClick={() => window.location.reload()}
@@ -246,7 +246,7 @@ function App() {
       ))}
       <div ref={observerTarget} className="h-10 -mt-1" />
       {loading && (
-        <div className="h-screen w-full flex items-center justify-center gap-2">
+        <div className="h-dvh w-full flex items-center justify-center gap-2">
           <Loader2 className="h-6 w-6 animate-spin" />
           <span>Loading...</span>
         </div>
